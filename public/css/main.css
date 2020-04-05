@@ -538,6 +538,10 @@ button {
   overflow-y: auto;
 }
 
+.film-details--hidden {
+  display: none;
+}
+
 .film-details__inner {
   background-color: #212126;
 }
