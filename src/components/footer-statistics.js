@@ -1,7 +1,7 @@
-const createFooterStatistics = () => {
+const createFooterStatistics = (cards) => {
   return (
     `<section class="footer__statistics">
-      <p>130 291 movies inside</p>
+      <p>${cards.length} movies inside</p>
     </section>`
   );
 };
