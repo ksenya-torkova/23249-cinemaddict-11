@@ -1,3 +1,5 @@
+import {createElement} from './../utils.js';
+
 const createCommentNew = () => {
   return (
     `<div class="film-details__new-comment">
@@ -32,4 +34,24 @@ const createCommentNew = () => {
   );
 };
 
-export {createCommentNew};
+export default class CommentNew {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createCommentNew();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

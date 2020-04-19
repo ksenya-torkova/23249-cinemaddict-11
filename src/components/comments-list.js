@@ -1,3 +1,5 @@
+import {createElement} from './../utils.js';
+
 const createCommentsList = () => {
   return (
     `<ul class="film-details__comments-list">
@@ -57,4 +59,24 @@ const createCommentsList = () => {
   );
 };
 
-export {createCommentsList};
+export default class CommentsList {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createCommentsList();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
