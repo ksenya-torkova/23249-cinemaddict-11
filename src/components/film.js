@@ -1,3 +1,5 @@
+import {createElement} from './../utils.js';
+
 const createFilmTemplate = (film) => {
   const {commentsAmount, description, duration, genre, isFavorites, isHistory, isWatchlist, name, poster, raiting, year} = film;
 
@@ -28,4 +30,25 @@ const createFilmTemplate = (film) => {
   );
 };
 
-export {createFilmTemplate};
+export default class Film {
+  constructor(film) {
+    this._film = film;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmTemplate(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

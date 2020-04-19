@@ -1,3 +1,5 @@
+import {createElement} from './../utils.js';
+
 const FILTERS_TYPES = [
   `isWatchlist`,
   `isHistory`,
@@ -24,4 +26,25 @@ const createMainNavigationTemplate = (cards) => {
   );
 };
 
-export {createMainNavigationTemplate};
+export default class MainNavigation {
+  constructor(cards) {
+    this._cards = cards;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createMainNavigationTemplate(this._cards);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
