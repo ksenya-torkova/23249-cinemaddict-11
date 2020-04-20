@@ -4,10 +4,14 @@ import CommentsListComponent from './components/comments-list.js';
 import CommentNewComponent from './components/comment-new.js';
 import FilmComponent from './components/film.js';
 import FilmDetailsComponent from './components/film-details.js';
-import FilmsContainerComponent from './components/films-container.js';
+import FilmsAllComponent from './components/films-all.js';
+import FilmsBoardComponent from './components/films-board.js';
+import FilmsCommentedComponent from './components/films-commented.js';
+import FilmsRatedComponent from './components/films-rated.js';
 import FooterStatisticsComponent from './components/footer-statistics.js';
 import LoadMoreComponent from './components/load-more.js';
 import MainNavigationComponent from './components/main-navigation.js';
+import NoFilmsComponent from './components/no-films.js';
 import SortComponent from './components/sort.js';
 import UserRaitingComponent from './components/user-raiting.js';
 import {generateFilmsList} from './mock/film-mock.js';
@@ -15,7 +19,7 @@ import {getUserRank} from './mock/user-raiting-mock.js';
 
 const CARDS_AMOUNT = 14;
 const DEFAULT_CARDS_AMOUNT = 5;
-// const DOWNLOADED_CARDS_AMOUNT = 5;
+const DOWNLOADED_CARDS_AMOUNT = 5;
 const ADDITIONAL_CARDS_AMOUNT = 2;
 const siteBody = document.querySelector(`body`);
 const siteHeader = siteBody.querySelector(`.header`);
@@ -23,24 +27,17 @@ const siteMain = siteBody.querySelector(`.main`);
 const siteFooter = siteBody.querySelector(`.footer`);
 const userRank = getUserRank(getRandomInteger(0, 30));
 const cards = generateFilmsList(CARDS_AMOUNT);
-const filmsContainerComponent = new FilmsContainerComponent();
+const filmsBoardComponent = new FilmsBoardComponent();
+const filmsAllComponent = new FilmsAllComponent();
 const filmDetailsComponent = new FilmDetailsComponent(cards[0]);
 const loadMoreComponent = new LoadMoreComponent();
 
 render(siteHeader, new UserRaitingComponent(userRank).getElement());
 render(siteMain, new MainNavigationComponent(cards).getElement());
 render(siteMain, new SortComponent().getElement());
-render(siteMain, filmsContainerComponent.getElement());
+render(siteMain, filmsBoardComponent.getElement());
 render(siteFooter, new FooterStatisticsComponent(cards).getElement());
 
-const filmsAll = filmsContainerComponent.getElement().querySelector(`.films-list--all`);
-const filmsAllContainer = filmsAll.querySelector(`.films-list__container`);
-const filmsRatedContainer = filmsContainerComponent.getElement().querySelector(`.films-list--rated .films-list__container`);
-const filmsCommentedContainer = filmsContainerComponent.getElement().querySelector(`.films-list--commented .films-list__container`);
-
-render(filmsAll, loadMoreComponent.getElement());
-
-// const loadMoreBtn = loadMoreComponent.getElement().querySelector(`.films-list__show-more`);
 let showingFilmsAmount = DEFAULT_CARDS_AMOUNT;
 
 const renderFilm = (container, film) => {
@@ -56,21 +53,35 @@ const renderAllFilms = (container, films) => {
   });
 };
 
-// loadMoreBtn.addEventListener(`click`, () => {
-//   const previousFilmsAmount = showingFilmsAmount;
-//   showingFilmsAmount += DOWNLOADED_CARDS_AMOUNT;
+const renderFilmsBoard = () => {
+  if (cards.length === 0) {
+    render(filmsBoardComponent.getElement(), new NoFilmsComponent().getElement());
+  } else {
+    render(filmsBoardComponent.getElement(), filmsAllComponent.getElement());
 
-//   cards.slice(previousFilmsAmount, showingFilmsAmount)
-//   .forEach((card) => {
-//     render(filmsAllContainer, createFilmTemplate(card));
-//   });
+    const filmsAllContainer = filmsAllComponent.getElement().querySelector(`.films-list__container`);
 
-//   if (showingFilmsAmount >= cards.length) {
-//     loadMoreBtn.remove();
-//   }
-// });
+    renderAllFilms(filmsAllContainer, cards);
+    render(filmsAllComponent.getElement(), loadMoreComponent.getElement());
 
-renderAllFilms(filmsAllContainer, cards);
+    loadMoreComponent.getElement().addEventListener(`click`, () => {
+      const previousFilmsAmount = showingFilmsAmount;
+      showingFilmsAmount += DOWNLOADED_CARDS_AMOUNT;
+
+      cards.slice(previousFilmsAmount, showingFilmsAmount)
+      .forEach((card) => {
+        renderFilm(filmsAllContainer, card);
+      });
+
+      if (showingFilmsAmount >= cards.length) {
+        loadMoreComponent.getElement().remove();
+        loadMoreComponent.removeElement();
+      }
+    });
+  }
+};
+
+renderFilmsBoard();
 
 const renderAdditionalFilms = (container, films) => {
   films.slice(0, ADDITIONAL_CARDS_AMOUNT)
@@ -87,6 +98,10 @@ const getTopRated = (cardsData) => {
 const topRatedFilms = getTopRated(cards);
 
 if (topRatedFilms) {
+  const filmsRatedComponent = new FilmsRatedComponent();
+  const filmsRatedContainer = filmsRatedComponent.getElement().querySelector(`.films-list__container`);
+
+  render(filmsBoardComponent.getElement(), filmsRatedComponent.getElement());
   renderAdditionalFilms(filmsRatedContainer, topRatedFilms);
 }
 
@@ -98,6 +113,10 @@ const getMostCommented = (cardsData) => {
 const mostCommentedFilms = getMostCommented(cards);
 
 if (mostCommentedFilms) {
+  const filmsCommentedComponent = new FilmsCommentedComponent();
+  const filmsCommentedContainer = filmsCommentedComponent.getElement().querySelector(`.films-list__container`);
+
+  render(filmsBoardComponent.getElement(), filmsCommentedComponent.getElement());
   renderAdditionalFilms(filmsCommentedContainer, mostCommentedFilms);
 }
 
