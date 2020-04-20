@@ -4,7 +4,7 @@ const createFilmDetailsTemplate = (film) => {
   const {actors, country, day, description, director, duration, genre, isFavorites, isHistory, isWatchlist, month, name, poster, raiting, writers, year} = film;
 
   return (
-    `<section class="film-details  film-details--hidden">
+    `<section class="film-details">
       <form class="film-details__inner" action="" method="get">
         <div class="form-details__top-container">
           <div class="film-details__close">
