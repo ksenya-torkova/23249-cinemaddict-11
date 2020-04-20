@@ -49,4 +49,8 @@ const shuffleArray = function (arr, length) {
   return copy;
 };
 
-export {createElement, getRandomInteger, getRandomArrayItem, render, shuffleArray};
+const checkEscKey = (evt) => {
+  return evt.key === `Escape` || evt.key === `Esc`;
+};
+
+export {checkEscKey, createElement, getRandomInteger, getRandomArrayItem, render, shuffleArray};
