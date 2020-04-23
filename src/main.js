@@ -64,6 +64,7 @@ const onEscKeyDown = (evt, popup) => {
 
 const openFilmPopup = (film, popup) => {
   renderFilmPopup(film, popup);
+  siteBody.classList.add(`hide-overflow`);
 
   document.addEventListener(`keydown`, (evt) => {
     onEscKeyDown(evt, popup);
@@ -72,6 +73,7 @@ const openFilmPopup = (film, popup) => {
 
 const closeFilmPopup = (popup) => {
   remove(popup);
+  siteBody.classList.remove(`hide-overflow`);
   document.removeEventListener(`keydown`, onEscKeyDown);
 };
 
@@ -81,24 +83,20 @@ const renderFilm = (container, film) => {
   render(container, filmComponent);
 
   const filmDetailsComponent = new FilmDetailsComponent(film);
-  const filmCover = filmComponent.getElement().querySelector(`.film-card img`);
-  const filmTitle = filmComponent.getElement().querySelector(`.film-card__title`);
-  const filmComments = filmComponent.getElement().querySelector(`.film-card__comments`);
-  const popupClose = filmDetailsComponent.getElement().querySelector(`.film-details__close-btn`);
 
-  filmCover.addEventListener(`click`, (evt) => {
+  filmComponent.setCoverClickHandler((evt) => {
     openFilmPopup(film, filmDetailsComponent, evt);
   });
 
-  filmTitle.addEventListener(`click`, (evt) => {
+  filmComponent.setTitleClickHandler((evt) => {
     openFilmPopup(film, filmDetailsComponent, evt);
   });
 
-  filmComments.addEventListener(`click`, (evt) => {
+  filmComponent.setCommentsAmountClickHandler((evt) => {
     openFilmPopup(film, filmDetailsComponent, evt);
   });
 
-  popupClose.addEventListener(`click`, () => {
+  filmDetailsComponent.setCloseButtonClickHandler(() => {
     closeFilmPopup(filmDetailsComponent);
   });
 };
@@ -121,7 +119,7 @@ const renderFilmsBoard = () => {
     renderAllFilms(filmsAllContainer, cards);
     render(filmsAllComponent.getElement(), loadMoreComponent);
 
-    loadMoreComponent.getElement().addEventListener(`click`, () => {
+    loadMoreComponent.setClickHandler(() => {
       const previousFilmsAmount = showingFilmsAmount;
       showingFilmsAmount += DOWNLOADED_CARDS_AMOUNT;
 

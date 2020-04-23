@@ -6,9 +6,12 @@ const createLoadMoreTemplate = () => {
   );
 };
 
-
 export default class LoadMore extends AbstractComponent {
   getTemplate() {
     return createLoadMoreTemplate();
+  }
+
+  setClickHandler(handler) {
+    this.getElement().addEventListener(`click`, handler);
   }
 }
