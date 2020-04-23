@@ -1,4 +1,4 @@
-import {createElement} from './../utils.js';
+import AbstractComponent from './abstract-component.js';
 
 const createCommentContainer = (card) => {
   const {commentsAmount} = card;
@@ -11,25 +11,13 @@ const createCommentContainer = (card) => {
   );
 };
 
-export default class CommentContainer {
+export default class CommentContainer extends AbstractComponent {
   constructor(card) {
+    super();
     this._card = card;
-    this._element = null;
   }
 
   getTemplate() {
     return createCommentContainer(this._card);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
