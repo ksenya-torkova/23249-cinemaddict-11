@@ -1,28 +1,3 @@
-const RenderPosition = {
-  AFTER_BEGIN: `afterbegin`,
-  AFTER_END: `afterend`,
-  BEFORE_BEGIN: `beforebegin`,
-  BEFORE_END: `beforeend`
-};
-
-const createElement = (template) => {
-  const newElement = document.createElement(`div`);
-  newElement.innerHTML = template;
-
-  return newElement.firstChild;
-};
-
-const render = (container, element, place = RenderPosition.BEFORE_END) => {
-  switch (place) {
-    case RenderPosition.AFTER_BEGIN:
-      container.prepend(element);
-      break;
-    case RenderPosition.BEFORE_END:
-      container.append(element);
-      break;
-  }
-};
-
 const getRandomInteger = function (min, max) {
   return Math.floor(min + Math.random() * (max + 1 - min));
 };
@@ -53,4 +28,4 @@ const checkEscKey = (evt) => {
   return evt.key === `Escape` || evt.key === `Esc`;
 };
 
-export {checkEscKey, createElement, getRandomInteger, getRandomArrayItem, render, shuffleArray};
+export {checkEscKey, getRandomArrayItem, getRandomInteger, shuffleArray};

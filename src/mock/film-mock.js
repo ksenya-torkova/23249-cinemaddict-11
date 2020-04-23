@@ -1,4 +1,4 @@
-import {getRandomInteger, getRandomArrayItem, shuffleArray} from './../utils.js';
+import {getRandomInteger, getRandomArrayItem, shuffleArray} from './../utils/common.js';
 
 const MOVIE_NAMES_AMOUNT = 20;
 

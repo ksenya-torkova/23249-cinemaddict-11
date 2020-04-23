@@ -1,4 +1,5 @@
-import {checkEscKey, getRandomInteger, render} from './utils.js';
+import {checkEscKey, getRandomInteger} from './utils/common.js';
+import {remove, render} from './utils/render.js';
 import CommentContainerComponent from './components/comment-container.js';
 import CommentsListComponent from './components/comments-list.js';
 import CommentNewComponent from './components/comment-new.js';
@@ -31,21 +32,25 @@ const filmsBoardComponent = new FilmsBoardComponent();
 const filmsAllComponent = new FilmsAllComponent();
 const loadMoreComponent = new LoadMoreComponent();
 
-render(siteHeader, new UserRaitingComponent(userRank).getElement());
-render(siteMain, new MainNavigationComponent(cards).getElement());
-render(siteMain, new SortComponent().getElement());
-render(siteMain, filmsBoardComponent.getElement());
-render(siteFooter, new FooterStatisticsComponent(cards).getElement());
+render(siteHeader, new UserRaitingComponent(userRank));
+render(siteMain, new MainNavigationComponent(cards));
+render(siteMain, new SortComponent());
+render(siteMain, filmsBoardComponent);
+render(siteFooter, new FooterStatisticsComponent(cards));
 
 let showingFilmsAmount = DEFAULT_CARDS_AMOUNT;
 
 const renderFilmPopup = (film, popup) => {
-  render(siteBody, popup.getElement());
+  render(siteBody, popup);
+
   const popupComments = popup.getElement().querySelector(`.form-details__bottom-container`);
-  render(popupComments, new CommentContainerComponent(film).getElement());
+
+  render(popupComments, new CommentContainerComponent(film));
+
   const comments = popupComments.querySelector(`.film-details__comments-wrap`);
-  render(comments, new CommentsListComponent().getElement());
-  render(comments, new CommentNewComponent().getElement());
+
+  render(comments, new CommentsListComponent());
+  render(comments, new CommentNewComponent());
 };
 
 const onEscKeyDown = (evt, popup) => {
@@ -66,14 +71,15 @@ const openFilmPopup = (film, popup) => {
 };
 
 const closeFilmPopup = (popup) => {
-  popup.getElement().remove();
-  popup.removeElement();
+  remove(popup);
   document.removeEventListener(`keydown`, onEscKeyDown);
 };
 
 const renderFilm = (container, film) => {
   const filmComponent = new FilmComponent(film);
-  render(container, filmComponent.getElement());
+
+  render(container, filmComponent);
+
   const filmDetailsComponent = new FilmDetailsComponent(film);
   const filmCover = filmComponent.getElement().querySelector(`.film-card img`);
   const filmTitle = filmComponent.getElement().querySelector(`.film-card__title`);
@@ -106,14 +112,14 @@ const renderAllFilms = (container, films) => {
 
 const renderFilmsBoard = () => {
   if (cards.length === 0) {
-    render(filmsBoardComponent.getElement(), new NoFilmsComponent().getElement());
+    render(filmsBoardComponent.getElement(), new NoFilmsComponent());
   } else {
-    render(filmsBoardComponent.getElement(), filmsAllComponent.getElement());
+    render(filmsBoardComponent.getElement(), filmsAllComponent);
 
     const filmsAllContainer = filmsAllComponent.getElement().querySelector(`.films-list__container`);
 
     renderAllFilms(filmsAllContainer, cards);
-    render(filmsAllComponent.getElement(), loadMoreComponent.getElement());
+    render(filmsAllComponent.getElement(), loadMoreComponent);
 
     loadMoreComponent.getElement().addEventListener(`click`, () => {
       const previousFilmsAmount = showingFilmsAmount;
@@ -125,8 +131,7 @@ const renderFilmsBoard = () => {
       });
 
       if (showingFilmsAmount >= cards.length) {
-        loadMoreComponent.getElement().remove();
-        loadMoreComponent.removeElement();
+        remove(loadMoreComponent);
       }
     });
   }
@@ -152,7 +157,7 @@ if (topRatedFilms) {
   const filmsRatedComponent = new FilmsRatedComponent();
   const filmsRatedContainer = filmsRatedComponent.getElement().querySelector(`.films-list__container`);
 
-  render(filmsBoardComponent.getElement(), filmsRatedComponent.getElement());
+  render(filmsBoardComponent.getElement(), filmsRatedComponent);
   renderAdditionalFilms(filmsRatedContainer, topRatedFilms);
 }
 
@@ -167,6 +172,6 @@ if (mostCommentedFilms) {
   const filmsCommentedComponent = new FilmsCommentedComponent();
   const filmsCommentedContainer = filmsCommentedComponent.getElement().querySelector(`.films-list__container`);
 
-  render(filmsBoardComponent.getElement(), filmsCommentedComponent.getElement());
+  render(filmsBoardComponent.getElement(), filmsCommentedComponent);
   renderAdditionalFilms(filmsCommentedContainer, mostCommentedFilms);
 }
