@@ -1,4 +1,4 @@
-import {createElement} from './../utils.js';
+import AbstractComponent from './abstract-component.js';
 
 const FILTERS_TYPES = [
   `isWatchlist`,
@@ -26,25 +26,13 @@ const createMainNavigationTemplate = (cards) => {
   );
 };
 
-export default class MainNavigation {
+export default class MainNavigation extends AbstractComponent {
   constructor(cards) {
+    super();
     this._cards = cards;
-    this._element = null;
   }
 
   getTemplate() {
     return createMainNavigationTemplate(this._cards);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
