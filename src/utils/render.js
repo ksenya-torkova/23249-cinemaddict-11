@@ -73,4 +73,4 @@ const renderFilmPopup = (film, popup) => {
   render(comments, new CommentNewComponent());
 };
 
-export {createElement, remove, render, renderFilm, renderFilmPopup};
+export {createElement, remove, render, renderFilm, renderFilmPopup, RenderPosition};

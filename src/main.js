@@ -1,6 +1,6 @@
 import {getRandomInteger} from './utils/common.js';
 import {siteBody, siteMain} from './utils/const.js';
-import {render} from './utils/render.js';
+import {render, RenderPosition} from './utils/render.js';
 import FilmsBoardComponent from './components/films-board.js';
 import FooterStatisticsComponent from './components/footer-statistics.js';
 import MainNavigationComponent from './components/main-navigation.js';
@@ -18,9 +18,10 @@ const cards = generateFilmsList(CARDS_AMOUNT);
 const filmsBoardComponent = new FilmsBoardComponent();
 
 render(siteHeader, new UserRaitingComponent(userRank));
-render(siteMain, new MainNavigationComponent(cards));
 render(siteMain, filmsBoardComponent);
 render(siteFooter, new FooterStatisticsComponent(cards));
 
 new AllFilmsController(filmsBoardComponent).render(cards);
 new AdditionalFilmsController(filmsBoardComponent).render(cards);
+
+render(siteMain, new MainNavigationComponent(cards), RenderPosition.AFTER_BEGIN);
