@@ -7,7 +7,7 @@ import MainNavigationComponent from './components/main-navigation.js';
 import UserRaitingComponent from './components/user-raiting.js';
 import {generateFilmsList} from './mock/film-mock.js';
 import {getUserRank} from './mock/user-raiting-mock.js';
-import AdditionalFilmsController from './controllers/additional-films-controller.js';
+// import AdditionalFilmsController from './controllers/additional-films-controller.js';
 import AllFilmsController from './controllers/all-films-controller.js';
 
 const CARDS_AMOUNT = 14;
@@ -22,6 +22,6 @@ render(siteMain, filmsBoardComponent);
 render(siteFooter, new FooterStatisticsComponent(cards));
 
 new AllFilmsController(filmsBoardComponent).render(cards);
-new AdditionalFilmsController(filmsBoardComponent).render(cards);
+// new AdditionalFilmsController(filmsBoardComponent).render(cards);
 
 render(siteMain, new MainNavigationComponent(cards), RenderPosition.AFTER_BEGIN);

@@ -1,6 +1,3 @@
-import {siteBody} from './const.js';
-import {remove, renderFilmPopup} from './render.js';
-
 const getRandomInteger = function (min, max) {
   return Math.floor(min + Math.random() * (max + 1 - min));
 };
@@ -31,28 +28,4 @@ const checkEscKey = (evt) => {
   return evt.key === `Escape` || evt.key === `Esc`;
 };
 
-const onEscKeyDown = (evt, popup) => {
-  const isEscKey = checkEscKey(evt);
-
-  if (isEscKey) {
-    closeFilmPopup(popup);
-    document.removeEventListener(`keydown`, onEscKeyDown);
-  }
-};
-
-const openFilmPopup = (film, popup) => {
-  renderFilmPopup(film, popup);
-  siteBody.classList.add(`hide-overflow`);
-
-  document.addEventListener(`keydown`, (evt) => {
-    onEscKeyDown(evt, popup);
-  });
-};
-
-const closeFilmPopup = (popup) => {
-  remove(popup);
-  siteBody.classList.remove(`hide-overflow`);
-  document.removeEventListener(`keydown`, onEscKeyDown);
-};
-
-export {closeFilmPopup, getRandomArrayItem, getRandomInteger, onEscKeyDown, openFilmPopup, shuffleArray};
+export {checkEscKey, getRandomArrayItem, getRandomInteger, shuffleArray};
