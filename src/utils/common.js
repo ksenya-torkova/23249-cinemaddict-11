@@ -1,3 +1,13 @@
+import moment from 'moment';
+
+const formatDate = (date) => {
+  return moment(date).format(`DD MMMM`);
+};
+
+const formatTime = (date) => {
+  return moment(date).format(`hh:mm`);
+};
+
 const getRandomInteger = function (min, max) {
   return Math.floor(min + Math.random() * (max + 1 - min));
 };
@@ -28,4 +38,4 @@ const checkEscKey = (evt) => {
   return evt.key === `Escape` || evt.key === `Esc`;
 };
 
-export {checkEscKey, getRandomArrayItem, getRandomInteger, shuffleArray};
+export {checkEscKey, getRandomArrayItem, getRandomInteger, formatDate, formatTime, shuffleArray};

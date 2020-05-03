@@ -38,4 +38,14 @@ export default class CommentNew extends AbstractComponent {
   getTemplate() {
     return createCommentNew();
   }
+
+  onEmojiListClick(handler) {
+    this.getElement().querySelector(`.film-details__emoji-list`).addEventListener(`click`, (evt) => {
+      if (evt.target.tagName.toLowerCase() !== `img`) {
+        return;
+      }
+
+      handler(evt);
+    });
+  }
 }

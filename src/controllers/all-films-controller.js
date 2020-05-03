@@ -9,9 +9,9 @@ import FilmController from './film-controller.js';
 const DEFAULT_CARDS_AMOUNT = 5;
 const DOWNLOADED_CARDS_AMOUNT = 5;
 
-const renderAllFilms = (container, films, onDataChange) => {
+const renderAllFilms = (container, films, onDataChange, onViewChange) => {
   return films.map((film) => {
-    const filmController = new FilmController(container, onDataChange);
+    const filmController = new FilmController(container, onDataChange, onViewChange);
 
     filmController.render(film);
 
@@ -52,6 +52,7 @@ export default class AllFilmsController {
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
     this._sortComponent.setSortTypeChangeHandler(this._onSortTypeChange);
     this._onDataChange = this._onDataChange.bind(this);
+    this._onViewChange = this._onViewChange.bind(this);
   }
 
   render(films) {
@@ -65,7 +66,7 @@ export default class AllFilmsController {
     render(siteMain, this._sortComponent, RenderPosition.AFTER_BEGIN);
     render(this._container.getElement(), this._filmsAllComponent);
 
-    const newFilms = renderAllFilms(this._filmsAllContainer, this._films.slice(0, this._shownFilmsAmount), this._onDataChange);
+    const newFilms = renderAllFilms(this._filmsAllContainer, this._films.slice(0, this._shownFilmsAmount), this._onDataChange, this._onViewChange);
 
     this._shownFilmControllers = this._shownFilmControllers.concat(newFilms);
     this._renderLoadMoreButton();
@@ -82,6 +83,12 @@ export default class AllFilmsController {
     this._shownFilmControllers[index].render(this._films[index]);
   }
 
+  _onViewChange() {
+    this._shownFilmControllers.forEach((it) => {
+      it.setDefaultView();
+    });
+  }
+
   _renderLoadMoreButton() {
     if (this._shownFilmsAmount === 0) {
       return;
@@ -95,7 +102,7 @@ export default class AllFilmsController {
       this._shownFilmsAmount += DOWNLOADED_CARDS_AMOUNT;
 
       const sortedFilms = getSortedFilms(this._films, this._sortComponent.getSortType(), previousFilmsAmount, this._shownFilmsAmount);
-      const newFilms = renderAllFilms(this._filmsAllContainer, sortedFilms.slice(0, this._shownFilmsAmount), this._onDataChange);
+      const newFilms = renderAllFilms(this._filmsAllContainer, sortedFilms.slice(0, this._shownFilmsAmount), this._onDataChange, this._onViewChange);
 
       this._shownFilmControllers = this._shownFilmControllers.concat(newFilms);
 
@@ -110,7 +117,7 @@ export default class AllFilmsController {
 
     this._filmsAllContainer.innerHTML = ``;
 
-    const newFilms = renderAllFilms(this._filmsAllContainer, sortedFilms, this._onDataChange);
+    const newFilms = renderAllFilms(this._filmsAllContainer, sortedFilms, this._onDataChange, this._onViewChange);
 
     this._shownFilmControllers = this._shownFilmControllers.concat(newFilms);
   }
