@@ -45,28 +45,53 @@ const closeFilmPopup = (popup) => {
 };
 
 export default class FilmController {
-  constructor(container) {
+  constructor(container, onDataChange) {
     this._container = container;
+    this._onDataChange = onDataChange;
+    this._filmComponent = null;
   }
 
   render(film) {
-    const filmComponent = new FilmComponent(film);
+    this._filmComponent = new FilmComponent(film);
 
-    render(this._container, filmComponent);
+    this._filmComponent.setButtonAddClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(film, Object.assign({}, film, {
+        isWatchlist: !film.isWatchlist
+      }));
+    });
+
+    this._filmComponent.setButtonFavoriteClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(film, Object.assign({}, film, {
+        isFavorites: !film.isFavorites
+      }));
+    });
+
+    this._filmComponent.setButtonWatchedClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(film, Object.assign({}, film, {
+        isHistory: !film.isHistory
+      }));
+    });
+
+    this._filmComponent.setCommentsAmountClickHandler((evt) => {
+      openFilmPopup(film, filmDetailsComponent, evt);
+    });
+
+    this._filmComponent.setCoverClickHandler((evt) => {
+      openFilmPopup(film, filmDetailsComponent, evt);
+    });
+
+    this._filmComponent.setTitleClickHandler((evt) => {
+      openFilmPopup(film, filmDetailsComponent, evt);
+    });
+
+
+    render(this._container, this._filmComponent);
+
 
     const filmDetailsComponent = new FilmDetailsComponent(film);
-
-    filmComponent.setCoverClickHandler((evt) => {
-      openFilmPopup(film, filmDetailsComponent, evt);
-    });
-
-    filmComponent.setTitleClickHandler((evt) => {
-      openFilmPopup(film, filmDetailsComponent, evt);
-    });
-
-    filmComponent.setCommentsAmountClickHandler((evt) => {
-      openFilmPopup(film, filmDetailsComponent, evt);
-    });
 
     filmDetailsComponent.setCloseButtonClickHandler(() => {
       closeFilmPopup(filmDetailsComponent);

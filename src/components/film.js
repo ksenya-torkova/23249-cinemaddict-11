@@ -40,15 +40,27 @@ export default class Film extends AbstractComponent {
     return createFilmTemplate(this._film);
   }
 
+  setButtonAddClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, handler);
+  }
+
+  setButtonFavoriteClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__controls-item--favorite`).addEventListener(`click`, handler);
+  }
+
+  setButtonWatchedClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__controls-item--mark-as-watched`).addEventListener(`click`, handler);
+  }
+
+  setCommentsAmountClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, handler);
+  }
+
   setCoverClickHandler(handler) {
     this.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, handler);
   }
 
   setTitleClickHandler(handler) {
     this.getElement().querySelector(`.film-card__title`).addEventListener(`click`, handler);
-  }
-
-  setCommentsAmountClickHandler(handler) {
-    this.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, handler);
   }
 }
