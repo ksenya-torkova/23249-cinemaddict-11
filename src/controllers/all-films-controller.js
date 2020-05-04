@@ -85,7 +85,10 @@ export default class AllFilmsController {
 
     this._shownFilmControllers = this._shownFilmControllers.concat(newFilms);
     this._renderLoadMoreButton();
+    this._renderAdditionalFilms();
+  }
 
+  _renderAdditionalFilms() {
     const topRatedFilms = getTopRated(this._films);
     const mostCommentedFilms = getMostCommented(this._films);
 
