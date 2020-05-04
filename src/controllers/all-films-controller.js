@@ -5,9 +5,22 @@ import LoadMoreComponent from './../components/load-more.js';
 import NoFilmsComponent from './../components/no-films.js';
 import SortComponent from './../components/sort.js';
 import FilmController from './film-controller.js';
+import FilmsCommentedComponent from './../components/films-commented.js';
+import FilmsRatedComponent from './../components/films-rated.js';
 
 const DEFAULT_CARDS_AMOUNT = 5;
 const DOWNLOADED_CARDS_AMOUNT = 5;
+const ADDITIONAL_CARDS_AMOUNT = 2;
+
+const getTopRated = (cardsData) => {
+  const result = cardsData.slice().sort((a, b) => b.raiting - a.raiting);
+  return result.slice(0, ADDITIONAL_CARDS_AMOUNT);
+};
+
+const getMostCommented = (cardsData) => {
+  const result = cardsData.slice().sort((a, b) => b.commentsAmount - a.commentsAmount);
+  return result.slice(0, ADDITIONAL_CARDS_AMOUNT);
+};
 
 const renderAllFilms = (container, films, onDataChange, onViewChange) => {
   return films.map((film) => {
@@ -48,6 +61,8 @@ export default class AllFilmsController {
     this._filmsAllContainer = this._filmsAllComponent.getElement().querySelector(`.films-list__container`);
     this._loadMoreComponent = new LoadMoreComponent();
     this._noFilmsComponent = new NoFilmsComponent();
+    this._filmsRatedComponent = new FilmsRatedComponent();
+    this._filmsCommentedComponent = new FilmsCommentedComponent();
     this._sortComponent = new SortComponent();
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
     this._sortComponent.setSortTypeChangeHandler(this._onSortTypeChange);
@@ -70,6 +85,23 @@ export default class AllFilmsController {
 
     this._shownFilmControllers = this._shownFilmControllers.concat(newFilms);
     this._renderLoadMoreButton();
+
+    const topRatedFilms = getTopRated(this._films);
+    const mostCommentedFilms = getMostCommented(this._films);
+
+    if (topRatedFilms) {
+      const filmsRatedContainer = this._filmsRatedComponent.getElement().querySelector(`.films-list__container`);
+
+      render(this._container.getElement(), this._filmsRatedComponent);
+      renderAllFilms(filmsRatedContainer, topRatedFilms, this._onDataChange, this._onViewChange);
+    }
+
+    if (mostCommentedFilms) {
+      const filmsCommentedContainer = this._filmsCommentedComponent.getElement().querySelector(`.films-list__container`);
+
+      render(this._container.getElement(), this._filmsCommentedComponent);
+      renderAllFilms(filmsCommentedContainer, mostCommentedFilms, this._onDataChange, this._onViewChange);
+    }
   }
 
   _onDataChange(oldData, newData) {
