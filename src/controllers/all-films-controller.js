@@ -96,14 +96,16 @@ export default class AllFilmsController {
       const filmsRatedContainer = this._filmsRatedComponent.getElement().querySelector(`.films-list__container`);
 
       render(this._container.getElement(), this._filmsRatedComponent);
-      renderAllFilms(filmsRatedContainer, topRatedFilms, this._onDataChange, this._onViewChange);
+      const newFilms = renderAllFilms(filmsRatedContainer, topRatedFilms, this._onDataChange, this._onViewChange);
+      this._shownFilmControllers = this._shownFilmControllers.concat(newFilms);
     }
 
     if (mostCommentedFilms) {
       const filmsCommentedContainer = this._filmsCommentedComponent.getElement().querySelector(`.films-list__container`);
 
       render(this._container.getElement(), this._filmsCommentedComponent);
-      renderAllFilms(filmsCommentedContainer, mostCommentedFilms, this._onDataChange, this._onViewChange);
+      const newFilms = renderAllFilms(filmsCommentedContainer, mostCommentedFilms, this._onDataChange, this._onViewChange);
+      this._shownFilmControllers = this._shownFilmControllers.concat(newFilms);
     }
   }
 
@@ -115,7 +117,14 @@ export default class AllFilmsController {
     }
 
     this._films = [].concat(this._films.slice(0, index), newData, this._films.slice(index + 1));
-    this._shownFilmControllers[index].render(this._films[index]);
+
+    this._shownFilmControllers.forEach((it) => {
+      const film = it._filmComponent._film;
+
+      if (film === oldData) {
+        it.render(newData);
+      }
+    });
   }
 
   _onViewChange() {
