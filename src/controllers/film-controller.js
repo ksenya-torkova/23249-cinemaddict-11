@@ -32,7 +32,7 @@ export default class FilmController {
     this._filmComponent.setButtonAddClickHandler((evt) => {
       evt.preventDefault();
 
-      this._onDataChange(this, this._film, Object.assign({}, film, {
+      this._onDataChange(this._film, Object.assign({}, film, {
         isWatchlist: !film.isWatchlist
       }));
     });
@@ -40,7 +40,7 @@ export default class FilmController {
     this._filmComponent.setButtonFavoriteClickHandler((evt) => {
       evt.preventDefault();
 
-      this._onDataChange(this, this._film, Object.assign({}, film, {
+      this._onDataChange(this._film, Object.assign({}, film, {
         isFavorites: !film.isFavorites
       }));
     });
@@ -48,7 +48,7 @@ export default class FilmController {
     this._filmComponent.setButtonWatchedClickHandler((evt) => {
       evt.preventDefault();
 
-      this._onDataChange(this, this._film, Object.assign({}, film, {
+      this._onDataChange(this._film, Object.assign({}, film, {
         isHistory: !film.isHistory
       }));
     });

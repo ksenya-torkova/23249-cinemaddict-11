@@ -34,17 +34,17 @@ const renderAllFilms = (container, films, onDataChange, onViewChange) => {
 
 const getSortedFilms = (films, sortType, from = 0, to = DEFAULT_CARDS_AMOUNT) => {
   let sortedFilms = [];
-  const showingTasks = films.slice();
+  const showingFilms = films.slice();
 
   switch (sortType) {
     case SortType.DATE:
-      sortedFilms = showingTasks.sort((a, b) => a.year - b.year);
+      sortedFilms = showingFilms.sort((a, b) => a.year - b.year);
       break;
     case SortType.RATING:
-      sortedFilms = showingTasks.sort((a, b) => b.raiting - a.raiting);
+      sortedFilms = showingFilms.sort((a, b) => b.raiting - a.raiting);
       break;
     case SortType.DEFAULT:
-      sortedFilms = showingTasks;
+      sortedFilms = showingFilms;
       break;
   }
 
@@ -115,7 +115,7 @@ export default class AllFilmsController {
 
     if (isSuccess) {
       this._shownFilmControllers.forEach((controller) => {
-        if (controller._film.id === oldData._film.id) {
+        if (controller._film.id === oldData.id) {
           controller.render(newData);
         }
       });
@@ -123,7 +123,7 @@ export default class AllFilmsController {
   }
 
   _onSortTypeChange(sortType) {
-    const sortedFilms = getSortedFilms(this._taskModel.getFilms(), sortType, 0, this._shownFilmsAmount);
+    const sortedFilms = getSortedFilms(this._filmModel.getFilms(), sortType, 0, this._shownFilmsAmount);
 
     this._filmsAllContainer.innerHTML = ``;
 
@@ -149,7 +149,7 @@ export default class AllFilmsController {
 
     this._loadMoreComponent.setClickHandler(() => {
       const previousFilmsAmount = this._shownFilmsAmount;
-      const films = this._taskModel.getFilms();
+      const films = this._filmModel.getFilms();
 
       this._shownFilmsAmount += DOWNLOADED_CARDS_AMOUNT;
 
@@ -158,7 +158,7 @@ export default class AllFilmsController {
 
       this._shownFilmControllers = this._shownFilmControllers.concat(newFilms);
 
-      if (this._shownFilmsAmount >= this._taskModel.getFilms().length) {
+      if (this._shownFilmsAmount >= this._filmModel.getFilms().length) {
         remove(this._loadMoreComponent);
       }
     });
