@@ -1,4 +1,4 @@
-import {render, replace} from './../utils/render.js';
+import {remove, render, replace} from './../utils/render.js';
 import PopupController from './popup-controller.js';
 import FilmComponent from './../components/film.js';
 
@@ -16,6 +16,10 @@ export default class FilmController {
     this._onViewChange = onViewChange;
     this._mode = Mode.DEFAULT;
     this._filmDetailsController = null;
+  }
+
+  destroy() {
+    remove(this._filmComponent);
   }
 
   _openPopup(film) {

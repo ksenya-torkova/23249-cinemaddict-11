@@ -17,6 +17,7 @@ export default class PopupController {
   closePopup() {
     remove(this._filmDetailsComponent);
     siteBody.classList.remove(`hide-overflow`);
+    document.removeEventListener(`keydown`, this._closeFilmPopupOnEscKeyDown);
   }
 
   _closeFilmPopupOnEscKeyDown(evt, popup) {
@@ -24,7 +25,6 @@ export default class PopupController {
 
     if (isEscKey) {
       this.closePopup(popup);
-      document.removeEventListener(`keydown`, this._closeFilmPopupOnEscKeyDown);
     }
   }
 
