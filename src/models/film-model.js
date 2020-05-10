@@ -25,10 +25,6 @@ export default class Film {
     this._dataChangeHandlers.push(handler);
   }
 
-  setFilterChangeHandlers(handler) {
-    this._filterChangeHandlers.push(handler);
-  }
-
   setFilms(films) {
     this._films = Array.from(films);
     this._callHandlers(this._dataChangeHandlers);
@@ -37,6 +33,10 @@ export default class Film {
   setFilter(filterType) {
     this._activeFilterType = filterType;
     this._callHandlers(this._filterChangeHandlers);
+  }
+
+  setFilterChangeHandlers(handler) {
+    this._filterChangeHandlers.push(handler);
   }
 
   updateFilm(id, film) {

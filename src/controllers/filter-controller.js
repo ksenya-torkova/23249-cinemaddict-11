@@ -19,13 +19,13 @@ export default class FilterController {
     this._filmModel.setDataChangeHandlers(this._onDataChange);
   }
 
+  _onDataChange() {
+    this.render();
+  }
+
   _onFilterChange(filterType) {
     this._activeFilterType = filterType;
     this._filmModel.setFilter(filterType);
-  }
-
-  _onDataChange() {
-    this.render();
   }
 
   render() {
