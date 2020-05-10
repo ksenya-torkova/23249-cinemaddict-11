@@ -1,6 +1,13 @@
 const siteBody = document.querySelector(`body`);
 const siteMain = siteBody.querySelector(`.main`);
 
+const FilterType = {
+  ALL: `all`,
+  WATCHLIST: `isWatchlist`,
+  HISTORY: `isHistory`,
+  FAVORITES: `isFavorites`,
+};
+
 const SortType = {
   DATE: `date`,
   DEFAULT: `default`,
@@ -8,7 +15,7 @@ const SortType = {
 };
 
 const Tag = {
-  LINK: `A`
+  LINK: `A`,
 };
 
-export {siteBody, siteMain, SortType, Tag};
+export {FilterType, siteBody, siteMain, SortType, Tag};

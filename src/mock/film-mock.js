@@ -64,7 +64,14 @@ const countries = [
   `Great Britain`
 ];
 
-const description = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.`;
+const description = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Cras aliquet varius magna, non porta ligula feugiat eget.
+Fusce tristique felis at fermentum pharetra.
+Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.
+Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.
+Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.
+Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat.
+Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.`;
 
 let randomDescription = ``;
 
@@ -82,24 +89,24 @@ let today = new Date();
 
 const generateFilm = () => {
   return {
-    // в попапе есть пункт "название на языке оригинала", значит, название стоит сделать объектом с названием по-русски и оригинальным именем
-    name: getRandomArrayItem(movies),
-    poster: getRandomArrayItem(posters),
-    description: getDescription(description),
-    raiting: `${getRandomInteger(1, 10)}.${getRandomInteger(0, 9)}`,
+    actors: shuffleArray(people, 3),
+    commentsAmount: getRandomInteger(0, 5),
+    country: shuffleArray(countries, getRandomInteger(1, 3)),
     day: getRandomInteger(1, 31),
-    month: getRandomInteger(1, 12),
-    year: getRandomInteger(1895, today.getFullYear()),
+    description: getDescription(description),
+    director: getDescription(description).slice(0, 20),
     duration: `${getRandomInteger(0, 5)}h ${getRandomInteger(0, 59)}m`,
     genre: getRandomArrayItem(genres),
-    commentsAmount: getRandomInteger(0, 5),
-    isWatchlist: Math.random() > 0.5,
-    isHistory: Math.random() > 0.5,
+    id: String(new Date() + Math.random()),
     isFavorites: Math.random() > 0.5,
-    director: getDescription(description).slice(0, 20),
+    isHistory: Math.random() > 0.5,
+    isWatchlist: Math.random() > 0.5,
+    month: getRandomInteger(1, 12),
+    name: getRandomArrayItem(movies),
+    poster: getRandomArrayItem(posters),
+    raiting: `${getRandomInteger(1, 10)}.${getRandomInteger(0, 9)}`,
+    year: getRandomInteger(1895, today.getFullYear()),
     writers: shuffleArray(people, 2),
-    actors: shuffleArray(people, 3),
-    country: shuffleArray(countries, getRandomInteger(1, 3))
   };
 };
 
