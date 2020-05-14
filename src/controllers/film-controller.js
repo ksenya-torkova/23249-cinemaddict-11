@@ -8,13 +8,14 @@ const Mode = {
 };
 
 export default class FilmController {
-  constructor(container, onDataChange, onViewChange) {
+  constructor(container, comments, onDataChange, onViewChange) {
     this._container = container;
     this._onDataChange = onDataChange;
     this._filmComponent = null;
     this._film = null;
     this._onViewChange = onViewChange;
     this._mode = Mode.DEFAULT;
+    this._comments = comments;
     this._filmDetailsController = null;
   }
 
@@ -23,7 +24,7 @@ export default class FilmController {
   }
 
   _openPopup(film) {
-    this._filmDetailsController = new PopupController(film, this._onDataChange, this._onViewChange);
+    this._filmDetailsController = new PopupController(film, this._comments, this._onDataChange, this._onViewChange);
     this._filmDetailsController.render();
     this._mode = Mode.POPUP;
   }
@@ -31,7 +32,7 @@ export default class FilmController {
   render(film) {
     this._film = film;
     const oldFilmComponent = this._filmComponent;
-    this._filmComponent = new FilmComponent(film);
+    this._filmComponent = new FilmComponent(film, this._comments.length);
 
     this._filmComponent.setButtonAddClickHandler((evt) => {
       evt.preventDefault();

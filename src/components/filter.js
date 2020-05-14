@@ -32,8 +32,8 @@ const createFilterLink = (filters, index) => {
 const createFilterTemplate = (filters) => {
   const filterLinks = filters
   .map(
-      (it, index) => {
-        return createFilterLink(it, index);
+      (filter, index) => {
+        return createFilterLink(filter, index);
       }
   ).join(`\n`);
 

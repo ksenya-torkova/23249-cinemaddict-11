@@ -4,20 +4,21 @@ import CommentsListComponent from './../components/comments-list.js';
 import CommentNewComponent from './../components/comment-new.js';
 
 export default class CommentariesController {
-  constructor(container, film) {
+  constructor(container, film, commentsList) {
     this._container = container;
     this._film = film;
+    this._commentsList = commentsList;
   }
 
   render() {
     const popupComments = this._container.getElement().querySelector(`.form-details__bottom-container`);
 
-    render(popupComments, new CommentContainerComponent(this._film));
+    render(popupComments, new CommentContainerComponent(this._film, this._commentsList));
 
     const comments = popupComments.querySelector(`.film-details__comments-wrap`);
     const commentNewComponent = new CommentNewComponent();
 
-    render(comments, new CommentsListComponent());
+    render(comments, new CommentsListComponent(this._commentsList));
     render(comments, commentNewComponent);
 
     commentNewComponent.onEmojiListClick((evt) => {

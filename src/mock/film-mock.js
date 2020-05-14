@@ -1,4 +1,4 @@
-import {getRandomInteger, getRandomArrayItem, shuffleArray} from './../utils/common.js';
+import {getRandomArrayItem, getRandomInteger, shuffleArray} from './../utils/common.js';
 
 const MOVIE_NAMES_AMOUNT = 20;
 
@@ -90,7 +90,6 @@ let today = new Date();
 const generateFilm = () => {
   return {
     actors: shuffleArray(people, 3),
-    commentsAmount: getRandomInteger(0, 5),
     country: shuffleArray(countries, getRandomInteger(1, 3)),
     day: getRandomInteger(1, 31),
     description: getDescription(description),

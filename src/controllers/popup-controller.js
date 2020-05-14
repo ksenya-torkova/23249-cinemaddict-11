@@ -5,8 +5,9 @@ import FilmDetailsComponent from './../components/film-details.js';
 import CommentariesController from './commentaries-controller.js';
 
 export default class PopupController {
-  constructor(film, onDataChange, onViewChange) {
+  constructor(film, filmComments, onDataChange, onViewChange) {
     this._film = film;
+    this._filmComments = filmComments;
     this._filmDetailsComponent = new FilmDetailsComponent(this._film);
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
@@ -29,7 +30,7 @@ export default class PopupController {
   }
 
   _loadComments(container, film) {
-    this._commentariesController = new CommentariesController(container, film);
+    this._commentariesController = new CommentariesController(container, film, this._filmComments);
     this._commentariesController.render();
   }
 

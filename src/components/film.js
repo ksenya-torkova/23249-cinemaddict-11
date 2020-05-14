@@ -1,7 +1,8 @@
 import AbstractComponent from './abstract-component.js';
 
-const createFilmTemplate = (film) => {
-  const {commentsAmount, description, duration, genre, isFavorites, isHistory, isWatchlist, name, poster, raiting, year} = film;
+const createFilmTemplate = (film, commentsLength) => {
+  const {description, duration, genre, isFavorites, isHistory, isWatchlist, name, poster, raiting, year} = film;
+  const commentsAmount = commentsLength;
 
   return (
     `<article class="film-card">
@@ -31,13 +32,14 @@ const createFilmTemplate = (film) => {
 };
 
 export default class Film extends AbstractComponent {
-  constructor(film) {
+  constructor(film, commentsAmount) {
     super();
     this._film = film;
+    this._commentsAmount = commentsAmount;
   }
 
   getTemplate() {
-    return createFilmTemplate(this._film);
+    return createFilmTemplate(this._film, this._commentsAmount);
   }
 
   setButtonAddClickHandler(handler) {
