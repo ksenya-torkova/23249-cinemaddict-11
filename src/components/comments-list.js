@@ -1,10 +1,10 @@
-import AbstractComponent from './abstract-component.js';
+import AbstractSmartComponent from './abstract-smart-component.js';
 
 const createComment = (comment) => {
-  const {emojiType, commentText, userName, time} = comment;
+  const {emojiType, commentText, userName, time, id} = comment;
 
   return (
-    `<li class="film-details__comment">
+    `<li class="film-details__comment" data-id="${id}">
       <span class="film-details__comment-emoji">
         <img src="./images/emoji/${emojiType}.png" width="55" height="55" alt="emoji-${emojiType}">
       </span>
@@ -35,7 +35,7 @@ const createCommentsList = (comments) => {
   );
 };
 
-export default class CommentsList extends AbstractComponent {
+export default class CommentsList extends AbstractSmartComponent {
   constructor(comments) {
     super();
     this._comments = comments;
@@ -43,5 +43,15 @@ export default class CommentsList extends AbstractComponent {
 
   getTemplate() {
     return createCommentsList(this._comments);
+  }
+
+  setDeleteButtonClickHandler(handler) {
+    const deleteButtons = this.getElement().querySelectorAll(`.film-details__comment-delete`);
+
+    deleteButtons.forEach((deleteButton) => deleteButton.addEventListener(`click`, () => {
+      const deleteBittonParent = deleteButton.closest(`.film-details__comment`);
+      deleteBittonParent.remove();
+      handler(deleteBittonParent.dataset.id);
+    }));
   }
 }

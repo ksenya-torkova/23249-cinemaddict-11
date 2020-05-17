@@ -1,8 +1,7 @@
 import AbstractComponent from './abstract-component.js';
 
-const createFilmTemplate = (film, commentsLength) => {
-  const {description, duration, genre, isFavorites, isHistory, isWatchlist, name, poster, raiting, year} = film;
-  const commentsAmount = commentsLength;
+const createFilmTemplate = (film) => {
+  const {description, duration, genre, isFavorites, isHistory, isWatchlist, name, poster, raiting, year, commentsLength} = film;
 
   return (
     `<article class="film-card">
@@ -15,7 +14,7 @@ const createFilmTemplate = (film, commentsLength) => {
       </p>
       <img src="./images/posters/${poster}" alt="" class="film-card__poster">
       <p class="film-card__description">${description}</p>
-      <a class="film-card__comments">${commentsAmount > 1 ? `${commentsAmount} comments` : `${commentsAmount} comment`}</a>
+      <a class="film-card__comments">${commentsLength === 1 ? `${commentsLength} comment` : `${commentsLength} comments`}</a>
       <form class="film-card__controls">
         <button class="film-card__controls-item button  film-card__controls-item--add-to-watchlist  ${isWatchlist ? `film-card__controls-item--active` : ``}">
           Add to watchlist

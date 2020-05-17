@@ -42,9 +42,8 @@ const getSortedFilms = (films, sortType, from = 0, to = DEFAULT_CARDS_AMOUNT) =>
 };
 
 export default class AllFilmsController {
-  constructor(container, comments, filmModel) {
+  constructor(container, filmModel) {
     this._container = container;
-    this._comments = comments;
     this._filmModel = filmModel;
     this._shownFilmControllers = [];
     this._shownFilmsAmount = DEFAULT_CARDS_AMOUNT;
@@ -148,8 +147,8 @@ export default class AllFilmsController {
   }
 
   _renderAllFilms(container, films, onDataChange, onViewChange) {
-    return films.map((film, index) => {
-      const filmController = new FilmController(container, this._comments[index], onDataChange, onViewChange);
+    return films.map((film) => {
+      const filmController = new FilmController(container, onDataChange, onViewChange);
 
       filmController.render(film);
 

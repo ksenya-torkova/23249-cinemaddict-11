@@ -90,6 +90,7 @@ let today = new Date();
 const generateFilm = () => {
   return {
     actors: shuffleArray(people, 3),
+    commentsLength: getRandomInteger(1, 31),
     country: shuffleArray(countries, getRandomInteger(1, 3)),
     day: getRandomInteger(1, 31),
     description: getDescription(description),

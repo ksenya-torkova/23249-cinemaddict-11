@@ -1,5 +1,4 @@
 import {getRandomInteger} from './utils/common.js';
-import {generateCommentsList} from './mock/comments-mock.js';
 import {generateFilmsList} from './mock/film-mock.js';
 import {getUserRank} from './mock/user-raiting-mock.js';
 import {render, RenderPosition} from './utils/render.js';
@@ -17,13 +16,12 @@ const siteHeader = siteBody.querySelector(`.header`);
 const siteFooter = siteBody.querySelector(`.footer`);
 const userRank = getUserRank(getRandomInteger(0, 30));
 const cards = generateFilmsList(CARDS_AMOUNT);
-const comments = generateCommentsList(CARDS_AMOUNT);
 const filmsBoardComponent = new FilmsBoardComponent();
 
 const filmModel = new FilmModel();
 filmModel.setFilms(cards);
 
-const allFilmsController = new AllFilmsController(filmsBoardComponent, comments, filmModel);
+const allFilmsController = new AllFilmsController(filmsBoardComponent, filmModel);
 allFilmsController.render();
 
 render(siteHeader, new UserRaitingComponent(userRank));

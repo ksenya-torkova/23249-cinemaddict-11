@@ -31,6 +31,7 @@ const times = [
 
 const generateComment = () => {
   return {
+    id: getRandomInteger(0, 100),
     emojiType: getRandomArrayItem(emoji),
     commentText: getRandomArrayItem(comments),
     userName: getRandomArrayItem(names),
@@ -44,14 +45,4 @@ const generateCommentsForFilm = () => {
   return new Array(commentsAmount).fill(``).map(generateComment);
 };
 
-const generateCommentsList = (amount) => {
-  const commentsList = [];
-
-  for (let i = 0; i < amount; i++) {
-    commentsList.push(generateCommentsForFilm());
-  }
-
-  return commentsList;
-};
-
-export {generateCommentsList};
+export {generateCommentsForFilm};
