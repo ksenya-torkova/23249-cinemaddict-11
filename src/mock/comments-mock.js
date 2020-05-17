@@ -1,4 +1,5 @@
 import {getRandomArrayItem, getRandomInteger} from './../utils/common.js';
+import {NAMES, TIMES} from './../utils/const.js';
 
 const emoji = [
   `smile`,
@@ -14,28 +15,13 @@ const comments = [
   `Almost two hours? Seriously?`,
 ];
 
-const names = [
-  `Tim Macoveev`,
-  `John Doe`,
-  `Hunter Michael Peterson`,
-  `Molly Rebecca Price`,
-  `Allison Emily Alexander`,
-];
-
-const times = [
-  `2019/12/31 23:59`,
-  `2 days ago`,
-  `1 day ago`,
-  `Today`
-];
-
 const generateComment = () => {
   return {
     id: getRandomInteger(0, 100),
     emojiType: getRandomArrayItem(emoji),
     commentText: getRandomArrayItem(comments),
-    userName: getRandomArrayItem(names),
-    time: getRandomArrayItem(times),
+    userName: getRandomArrayItem(NAMES),
+    time: getRandomArrayItem(TIMES),
   };
 };
 

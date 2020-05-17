@@ -8,6 +8,14 @@ const FilterType = {
   FAVORITES: `isFavorites`,
 };
 
+const NAMES = [
+  `Tim Macoveev`,
+  `John Doe`,
+  `Hunter Michael Peterson`,
+  `Molly Rebecca Price`,
+  `Allison Emily Alexander`,
+];
+
 const SortType = {
   DATE: `date`,
   DEFAULT: `default`,
@@ -18,4 +26,11 @@ const Tag = {
   LINK: `A`,
 };
 
-export {FilterType, siteBody, siteMain, SortType, Tag};
+const TIMES = [
+  `2019/12/31 23:59`,
+  `2 days ago`,
+  `1 day ago`,
+  `Today`
+];
+
+export {FilterType, NAMES, siteBody, siteMain, SortType, Tag, TIMES};

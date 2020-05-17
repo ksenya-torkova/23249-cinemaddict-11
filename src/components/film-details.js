@@ -127,4 +127,12 @@ export default class FilmDetails extends AbstractSmartComponent {
     this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
     this._closeButtonClickHandler = handler;
   }
+
+  setSubmitHandler(handler) {
+    this.getElement().querySelector(`.film-details__inner`).addEventListener(`keydown`, (evt) => {
+      if (evt.key === `Enter` && (evt.ctrlKey || evt.metaKey)) {
+        handler();
+      }
+    });
+  }
 }

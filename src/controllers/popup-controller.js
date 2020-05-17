@@ -65,6 +65,23 @@ export default class PopupController {
       this.closePopup(this._filmDetailsComponent);
     });
 
+    this._filmDetailsComponent.setSubmitHandler(() => {
+      const emoji = this._filmDetailsComponent.getElement().querySelector(`.film-details__add-emoji-label img`);
+      const textarea = this._filmDetailsComponent.getElement().querySelector(`.film-details__comment-input`);
+
+      if (emoji.alt && textarea.value) {
+        this._commentsModel.createComment(emoji.alt, textarea.value);
+        const form = this._filmDetailsComponent.getElement().querySelector(`.film-details__inner`);
+        form.reset();
+
+        this._onDataChange(this._film, Object.assign({}, this._film, {
+          commentsLength: this._commentsModel.getComments().length,
+        }));
+
+        this._commentariesController.addComment();
+      }
+    });
+
     this._loadComments(this._filmDetailsComponent, this._film);
 
     render(siteBody, this._filmDetailsComponent);

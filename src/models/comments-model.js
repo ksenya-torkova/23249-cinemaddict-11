@@ -1,3 +1,6 @@
+import {createComment, getRandomArrayItem, getRandomInteger} from './../utils/common.js';
+import {NAMES, TIMES} from './../utils/const.js';
+
 export default class Comments {
   constructor() {
     this._comments = [];
@@ -5,7 +8,7 @@ export default class Comments {
   }
 
   addComment(comment) {
-    this._comments = [].concat(comment, this._comments);
+    this._comments = [].concat(this._comments, comment);
     this._callHandlers(this._dataChangeHandlers);
   }
 
@@ -13,6 +16,19 @@ export default class Comments {
     handlers.forEach((handler) => {
       handler();
     });
+  }
+
+  createComment(emoji, text) {
+    const commentData = {
+      emojiType: emoji,
+      commentText: text,
+      userName: getRandomArrayItem(NAMES),
+      time: getRandomArrayItem(TIMES),
+      id: getRandomInteger(0, 100),
+    };
+
+    this.addComment(commentData);
+    createComment(commentData);
   }
 
   getComments() {
