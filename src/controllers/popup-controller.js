@@ -1,3 +1,4 @@
+import {encode} from "he";
 import {siteBody} from './../utils/const.js';
 import {remove, render} from './../utils/render.js';
 import {checkEscKey} from './../utils/common.js';
@@ -70,7 +71,7 @@ export default class PopupController {
       const textarea = this._filmDetailsComponent.getElement().querySelector(`.film-details__comment-input`);
 
       if (emoji.alt && textarea.value) {
-        this._commentsModel.createComment(emoji.alt, textarea.value);
+        this._commentsModel.createComment(emoji.alt, encode(textarea.value));
         const form = this._filmDetailsComponent.getElement().querySelector(`.film-details__inner`);
         form.reset();
 
