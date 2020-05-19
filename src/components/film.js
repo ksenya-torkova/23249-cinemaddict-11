@@ -1,7 +1,7 @@
 import AbstractComponent from './abstract-component.js';
 
 const createFilmTemplate = (film) => {
-  const {description, duration, genre, isFavorites, isHistory, isWatchlist, name, poster, raiting, year, commentsLength} = film;
+  const {description, duration, genres, isFavorites, isHistory, isWatchlist, name, poster, raiting, year, commentsLength} = film;
 
   return (
     `<article class="film-card">
@@ -10,7 +10,7 @@ const createFilmTemplate = (film) => {
       <p class="film-card__info">
         <span class="film-card__year">${year}</span>
         <span class="film-card__duration">${duration}</span>
-        <span class="film-card__genre">${genre}</span>
+        <span class="film-card__genre">${genres}</span>
       </p>
       <img src="./images/posters/${poster}" alt="" class="film-card__poster">
       <p class="film-card__description">${description}</p>

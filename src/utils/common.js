@@ -42,6 +42,10 @@ const getRandomArrayItem = (arr) => {
   return arr[randomIndex];
 };
 
+const getSubstring = (string, subtring) => {
+  return string.substring(subtring.length);
+};
+
 const shuffleArray = function (arr, length) {
   const copy = [...arr];
   // тасование массива по алгоритму Фишера-Йетса
@@ -58,4 +62,4 @@ const shuffleArray = function (arr, length) {
   return copy;
 };
 
-export {checkEscKey, createComment, getRandomArrayItem, getRandomInteger, formatDate, formatTime, shuffleArray};
+export {checkEscKey, createComment, getRandomArrayItem, getRandomInteger, getSubstring, formatDate, formatTime, shuffleArray};

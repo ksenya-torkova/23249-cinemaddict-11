@@ -85,7 +85,18 @@ const getDescription = (text) => {
   return randomDescription.join(`. `);
 };
 
-let today = new Date();
+const today = new Date();
+
+const getGenres = () => {
+  const randomGenres = shuffleArray(genres, getRandomInteger(0, genres.length));
+
+  return randomGenres
+  .map(
+      (randomGenre) => {
+        return ` ${randomGenre}`;
+      }
+  );
+};
 
 const generateFilm = () => {
   return {
@@ -95,8 +106,8 @@ const generateFilm = () => {
     day: getRandomInteger(1, 31),
     description: getDescription(description),
     director: getDescription(description).slice(0, 20),
-    duration: `${getRandomInteger(0, 5)}h ${getRandomInteger(0, 59)}m`,
-    genre: getRandomArrayItem(genres),
+    duration: getRandomInteger(0, 360),
+    genres: getGenres(),
     id: String(new Date() + Math.random()),
     isFavorites: Math.random() > 0.5,
     isHistory: Math.random() > 0.5,

@@ -64,6 +64,11 @@ export default class AllFilmsController {
     this._onLoadMoreButoonClickHandler = this._onLoadMoreButoonClickHandler.bind(this);
   }
 
+  hide() {
+    this._container.hide();
+    this._sortComponent.hide();
+  }
+
   _onDataChange(oldData, newData) {
     const isSuccess = this._filmModel.updateFilm(oldData.id, newData);
 
@@ -170,6 +175,11 @@ export default class AllFilmsController {
 
     render(this._filmsAllComponent.getElement(), this._loadMoreComponent);
     this._loadMoreComponent.setClickHandler(this._onLoadMoreButoonClickHandler);
+  }
+
+  show() {
+    this._container.show();
+    this._sortComponent.show();
   }
 
   _updateFilms(amount) {
