@@ -1,23 +1,26 @@
 import AbstractComponent from './abstract-component.js';
 
-const createCommentContainer = (card) => {
-  const {commentsAmount} = card;
-  const commentDeclension = commentsAmount > 1 ? `Comments` : `Comment`;
+const createCommentContainer = (amount) => {
+  const commentDeclension = amount > 1 ? `Comments` : `Comment`;
+  const isComments = amount > 0 ?
+    `<h3 class="film-details__comments-title">${commentDeclension}
+      <span class="film-details__comments-count">${amount}</span>
+    </h3>` : ``;
 
   return (
     `<section class="film-details__comments-wrap">
-      <h3 class="film-details__comments-title">${commentDeclension} <span class="film-details__comments-count">${commentsAmount}</span></h3>
+      ${isComments}
     </section>`
   );
 };
 
 export default class CommentContainer extends AbstractComponent {
-  constructor(card) {
+  constructor(commentsLength) {
     super();
-    this._card = card;
+    this._commentsLength = commentsLength;
   }
 
   getTemplate() {
-    return createCommentContainer(this._card);
+    return createCommentContainer(this._commentsLength);
   }
 }

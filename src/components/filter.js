@@ -1,4 +1,5 @@
-import {FilterType, Tag} from './../utils/const';
+import {ANCHOR_PREFIX, FilterType, FILTER_TYPES_PREFIX, Tag} from './../utils/const';
+import {getSubstring} from './../utils/common.js';
 import AbstractComponent from './abstract-component.js';
 
 const FILTER_NAMES = [
@@ -8,13 +9,6 @@ const FILTER_NAMES = [
   FilterType.FAVORITES,
 ];
 
-const FILTER_PREFIX = `#`;
-const FILTER_TYPES_PREFIX = `is`;
-
-const getSubstring = (string, subtring) => {
-  return string.substring(subtring.length);
-};
-
 const createFilterLink = (filters, index) => {
   const {filterType, count: filmsAmcountount, isActive} = filters;
   const activeClass = isActive ? `main-navigation__item--active` : ``;
@@ -22,7 +16,7 @@ const createFilterLink = (filters, index) => {
   const filterName = filterType !== FilterType.ALL ? getSubstring(FILTER_NAMES[index], FILTER_TYPES_PREFIX) : FILTER_NAMES[0];
 
   return (
-    `<a href="${FILTER_PREFIX}${filterType}" class="main-navigation__item ${activeClass}">
+    `<a href="${ANCHOR_PREFIX}${filterType}" class="main-navigation__item ${activeClass}">
       ${filterName}
       ${amount}
     </a>`
@@ -32,8 +26,8 @@ const createFilterLink = (filters, index) => {
 const createFilterTemplate = (filters) => {
   const filterLinks = filters
   .map(
-      (it, index) => {
-        return createFilterLink(it, index);
+      (filter, index) => {
+        return createFilterLink(filter, index);
       }
   ).join(`\n`);
 
@@ -59,18 +53,14 @@ export default class Filter extends AbstractComponent {
       evt.preventDefault();
 
       if (evt.target.tagName === Tag.LINK.toUpperCase()) {
-        const filterName = getSubstring(evt.target.getAttribute(`href`), FILTER_PREFIX);
+        const clickedItem = getSubstring(evt.target.getAttribute(`href`), ANCHOR_PREFIX);
         const filterActiveClass = `main-navigation__item--active`;
-        const filterActive = this.getElement().querySelector(`.${filterActiveClass}`);
 
         if (evt.target.classList.contains(filterActiveClass)) {
           return;
         }
 
-        filterActive.classList.remove(filterActiveClass);
-        evt.target.classList.add(filterActiveClass);
-
-        handler(filterName);
+        handler(clickedItem);
       }
     });
   }

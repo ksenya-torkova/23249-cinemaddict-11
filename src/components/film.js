@@ -1,7 +1,7 @@
 import AbstractComponent from './abstract-component.js';
 
 const createFilmTemplate = (film) => {
-  const {commentsAmount, description, duration, genre, isFavorites, isHistory, isWatchlist, name, poster, raiting, year} = film;
+  const {description, duration, genres, isFavorites, isHistory, isWatchlist, name, poster, raiting, year, commentsLength} = film;
 
   return (
     `<article class="film-card">
@@ -10,11 +10,11 @@ const createFilmTemplate = (film) => {
       <p class="film-card__info">
         <span class="film-card__year">${year}</span>
         <span class="film-card__duration">${duration}</span>
-        <span class="film-card__genre">${genre}</span>
+        <span class="film-card__genre">${genres}</span>
       </p>
       <img src="./images/posters/${poster}" alt="" class="film-card__poster">
       <p class="film-card__description">${description}</p>
-      <a class="film-card__comments">${commentsAmount > 1 ? `${commentsAmount} comments` : `${commentsAmount} comment`}</a>
+      <a class="film-card__comments">${commentsLength === 1 ? `${commentsLength} comment` : `${commentsLength} comments`}</a>
       <form class="film-card__controls">
         <button class="film-card__controls-item button  film-card__controls-item--add-to-watchlist  ${isWatchlist ? `film-card__controls-item--active` : ``}">
           Add to watchlist
@@ -31,13 +31,14 @@ const createFilmTemplate = (film) => {
 };
 
 export default class Film extends AbstractComponent {
-  constructor(film) {
+  constructor(film, commentsAmount) {
     super();
     this._film = film;
+    this._commentsAmount = commentsAmount;
   }
 
   getTemplate() {
-    return createFilmTemplate(this._film);
+    return createFilmTemplate(this._film, this._commentsAmount);
   }
 
   setButtonAddClickHandler(handler) {

@@ -22,16 +22,6 @@ const getMostCommented = (cardsData) => {
   return result.slice(0, ADDITIONAL_CARDS_AMOUNT);
 };
 
-const renderAllFilms = (container, films, onDataChange, onViewChange) => {
-  return films.map((film) => {
-    const filmController = new FilmController(container, onDataChange, onViewChange);
-
-    filmController.render(film);
-
-    return filmController;
-  });
-};
-
 const getSortedFilms = (films, sortType, from = 0, to = DEFAULT_CARDS_AMOUNT) => {
   let sortedFilms = [];
   const showingFilms = films.slice();
@@ -72,6 +62,11 @@ export default class AllFilmsController {
     this._filmModel.setFilterChangeHandlers(this._onFilterChange);
     this._mainFilmsControllers = [];
     this._onLoadMoreButoonClickHandler = this._onLoadMoreButoonClickHandler.bind(this);
+  }
+
+  hide() {
+    this._container.hide();
+    this._sortComponent.hide();
   }
 
   _onDataChange(oldData, newData) {
@@ -144,20 +139,30 @@ export default class AllFilmsController {
     if (topRatedFilms) {
       const filmsRatedContainer = this._filmsRatedComponent.getElement().querySelector(`.films-list__container`);
       render(this._container.getElement(), this._filmsRatedComponent);
-      const additionalFilms = renderAllFilms(filmsRatedContainer, topRatedFilms, this._onDataChange, this._onViewChange);
+      const additionalFilms = this._renderAllFilms(filmsRatedContainer, topRatedFilms, this._onDataChange, this._onViewChange);
       this._shownFilmControllers = this._shownFilmControllers.concat(additionalFilms);
     }
 
     if (mostCommentedFilms) {
       const filmsCommentedContainer = this._filmsCommentedComponent.getElement().querySelector(`.films-list__container`);
       render(this._container.getElement(), this._filmsCommentedComponent);
-      const additionalFilms = renderAllFilms(filmsCommentedContainer, mostCommentedFilms, this._onDataChange, this._onViewChange);
+      const additionalFilms = this._renderAllFilms(filmsCommentedContainer, mostCommentedFilms, this._onDataChange, this._onViewChange);
       this._shownFilmControllers = this._shownFilmControllers.concat(additionalFilms);
     }
   }
 
+  _renderAllFilms(container, films, onDataChange, onViewChange) {
+    return films.map((film) => {
+      const filmController = new FilmController(container, onDataChange, onViewChange);
+
+      filmController.render(film);
+
+      return filmController;
+    });
+  }
+
   _renderMainFilms(films) {
-    const mainFilms = renderAllFilms(this._filmsAllContainer, films.slice(0, this._shownFilmsAmount), this._onDataChange, this._onViewChange);
+    const mainFilms = this._renderAllFilms(this._filmsAllContainer, films.slice(0, this._shownFilmsAmount), this._onDataChange, this._onViewChange);
     this._mainFilmsControllers = this._mainFilmsControllers.concat(mainFilms);
   }
 
@@ -170,6 +175,11 @@ export default class AllFilmsController {
 
     render(this._filmsAllComponent.getElement(), this._loadMoreComponent);
     this._loadMoreComponent.setClickHandler(this._onLoadMoreButoonClickHandler);
+  }
+
+  show() {
+    this._container.show();
+    this._sortComponent.show();
   }
 
   _updateFilms(amount) {

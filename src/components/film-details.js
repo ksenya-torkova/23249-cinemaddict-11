@@ -57,8 +57,6 @@ const createFilmDetailsTemplate = (film) => {
                 <tr class="film-details__row">
                   <td class="film-details__term">Genres</td>
                   <td class="film-details__cell">
-                    <? -- Вот тут непонятно, в карточке фильма мы указываем один жанр, а здесь жанры и они должны быть не в одном спане, а каждый жанр в отдельном span.
-                    Значит, нужан еще функция, которая будет генерировать разметку для жанров в зависимости от их количества? -->
                     <span class="film-details__genre">${genre}</span>
                     <span class="film-details__genre"></span>
                     <span class="film-details__genre"></span>
@@ -128,5 +126,13 @@ export default class FilmDetails extends AbstractSmartComponent {
   setCloseButtonClickHandler(handler) {
     this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
     this._closeButtonClickHandler = handler;
+  }
+
+  setSubmitHandler(handler) {
+    this.getElement().querySelector(`.film-details__inner`).addEventListener(`keydown`, (evt) => {
+      if (evt.key === `Enter` && (evt.ctrlKey || evt.metaKey)) {
+        handler();
+      }
+    });
   }
 }
