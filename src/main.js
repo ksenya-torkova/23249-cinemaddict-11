@@ -1,5 +1,5 @@
-import {getRandomInteger} from './utils/common.js';
 import {STATISTICS_LINK} from './utils/const.js';
+import {getWatchedFilms} from './utils/filter';
 import {generateFilmsList} from './mock/film-mock.js';
 import {getUserRank} from './mock/user-raiting-mock.js';
 import {render, RenderPosition} from './utils/render.js';
@@ -13,10 +13,9 @@ import MainNavigationComponent from './components/main-navigation.js';
 import UserRaitingComponent from './components/user-raiting.js';
 import StatisticComponent from "./components/statistics.js";
 
-const CARDS_AMOUNT = 14;
+const CARDS_AMOUNT = 40;
 const siteHeader = siteBody.querySelector(`.header`);
 const siteFooter = siteBody.querySelector(`.footer`);
-const userRank = getUserRank(getRandomInteger(0, 30));
 const cards = generateFilmsList(CARDS_AMOUNT);
 const filmsBoardComponent = new FilmsBoardComponent();
 
@@ -25,6 +24,9 @@ filmModel.setFilms(cards);
 
 const allFilmsController = new AllFilmsController(filmsBoardComponent, filmModel);
 allFilmsController.render();
+
+const watchedFilms = getWatchedFilms(filmModel.getFilms());
+const userRank = getUserRank(watchedFilms.length);
 
 render(siteHeader, new UserRaitingComponent(userRank));
 render(siteMain, filmsBoardComponent);
