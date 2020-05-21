@@ -28,7 +28,7 @@ const getSortedFilms = (films, sortType, from = 0, to = DEFAULT_CARDS_AMOUNT) =>
 
   switch (sortType) {
     case SortType.DATE:
-      sortedFilms = showingFilms.sort((a, b) => a.year - b.year);
+      sortedFilms = showingFilms.sort((a, b) => b.year - a.year);
       break;
     case SortType.RATING:
       sortedFilms = showingFilms.sort((a, b) => b.raiting - a.raiting);
