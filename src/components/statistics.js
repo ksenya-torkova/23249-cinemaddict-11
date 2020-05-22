@@ -1,4 +1,4 @@
-import {getUserRank} from "./../mock/user-raiting-mock.js";
+import {getUserRank} from './../components/user-raiting.js';
 import {getWatchedFilms} from "../utils/filter.js";
 import Chart from "chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels';

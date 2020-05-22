@@ -42,9 +42,10 @@ const getSortedFilms = (films, sortType, from = 0, to = DEFAULT_CARDS_AMOUNT) =>
 };
 
 export default class AllFilmsController {
-  constructor(container, filmModel) {
+  constructor(container, filmsModel, api) {
     this._container = container;
-    this._filmModel = filmModel;
+    this._filmsModel = filmsModel;
+    this._api = api;
     this._shownFilmControllers = [];
     this._shownFilmsAmount = DEFAULT_CARDS_AMOUNT;
     this._filmsAllComponent = new FilmsAllComponent();
@@ -59,7 +60,7 @@ export default class AllFilmsController {
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
-    this._filmModel.setFilterChangeHandlers(this._onFilterChange);
+    this._filmsModel.setFilterChangeHandlers(this._onFilterChange);
     this._mainFilmsControllers = [];
     this._onLoadMoreButoonClickHandler = this._onLoadMoreButoonClickHandler.bind(this);
   }
@@ -70,7 +71,7 @@ export default class AllFilmsController {
   }
 
   _onDataChange(oldData, newData) {
-    const isSuccess = this._filmModel.updateFilm(oldData.id, newData);
+    const isSuccess = this._filmsModel.updateFilm(oldData.id, newData);
 
     if (isSuccess) {
       [...this._shownFilmControllers, ...this._mainFilmsControllers].forEach((controller) => {
@@ -87,18 +88,18 @@ export default class AllFilmsController {
 
   _onLoadMoreButoonClickHandler() {
     const previousFilmsAmount = this._shownFilmsAmount;
-    const films = this._filmModel.getFiltredFilms();
+    const films = this._filmsModel.getFiltredFilms();
     this._shownFilmsAmount += DOWNLOADED_CARDS_AMOUNT;
     const sortedFilms = getSortedFilms(films, this._sortComponent.getSortType(), previousFilmsAmount, this._shownFilmsAmount);
     this._renderMainFilms(sortedFilms.slice(0, this._shownFilmsAmount));
 
-    if (this._shownFilmsAmount >= this._filmModel.getFiltredFilms().length) {
+    if (this._shownFilmsAmount >= this._filmsModel.getFiltredFilms().length) {
       remove(this._loadMoreComponent);
     }
   }
 
   _onSortTypeChange(sortType) {
-    const sortedFilms = getSortedFilms(this._filmModel.getFiltredFilms(), sortType, 0, this._shownFilmsAmount);
+    const sortedFilms = getSortedFilms(this._filmsModel.getFiltredFilms(), sortType, 0, this._shownFilmsAmount);
     this._removeFilms();
     this._renderMainFilms(sortedFilms);
     this._renderLoadMoreButton();
@@ -116,7 +117,7 @@ export default class AllFilmsController {
   }
 
   render() {
-    const films = this._filmModel.getFiltredFilms();
+    const films = this._filmsModel.getFiltredFilms();
 
     if (films.length === 0) {
       render(this._container.getElement(), this._noFilmsComponent);
@@ -132,7 +133,7 @@ export default class AllFilmsController {
   }
 
   _renderAdditionalFilms() {
-    const films = this._filmModel.getFiltredFilms();
+    const films = this._filmsModel.getFiltredFilms();
     const topRatedFilms = getTopRated(films);
     const mostCommentedFilms = getMostCommented(films);
 
@@ -169,7 +170,7 @@ export default class AllFilmsController {
   _renderLoadMoreButton() {
     remove(this._loadMoreComponent);
 
-    if (this._shownFilmsAmount >= this._filmModel.getFiltredFilms().length) {
+    if (this._shownFilmsAmount >= this._filmsModel.getFiltredFilms().length) {
       return;
     }
 
@@ -184,7 +185,7 @@ export default class AllFilmsController {
 
   _updateFilms(amount) {
     this._removeFilms();
-    this._renderMainFilms(getSortedFilms(this._filmModel.getFiltredFilms(), this._sortComponent.getSortType(), 0, this._shownFilmsAmount).slice(0, amount));
+    this._renderMainFilms(getSortedFilms(this._filmsModel.getFiltredFilms(), this._sortComponent.getSortType(), 0, this._shownFilmsAmount).slice(0, amount));
     this._renderLoadMoreButton();
   }
 }
