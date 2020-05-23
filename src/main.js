@@ -13,21 +13,18 @@ import UserRaitingComponent, {getUserRank} from './components/user-raiting.js';
 import StatisticComponent from "./components/statistics.js";
 
 const AUTHORIZATION = `Basic dslkewj0hWE345i33r;`;
-const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
+const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict/`;
 const siteHeader = siteBody.querySelector(`.header`);
 const siteFooter = siteBody.querySelector(`.footer`);
 const filmsBoardComponent = new FilmsBoardComponent();
 const api = new API(AUTHORIZATION, END_POINT);
 const filmsModel = new FilmsModel();
 const allFilmsController = new AllFilmsController(filmsBoardComponent, filmsModel, api);
-const watchedFilms = getWatchedFilms(filmsModel.getFilms());
-const userRank = getUserRank(watchedFilms.length);
 const mainNavigationComponent = new MainNavigationComponent();
 const filterContainer = mainNavigationComponent.getElement();
 const filterController = new FilterController(filterContainer, filmsModel);
 let statisticComponent = null;
 
-render(siteHeader, new UserRaitingComponent(userRank));
 render(siteMain, filmsBoardComponent);
 render(siteMain, mainNavigationComponent, RenderPosition.AFTER_BEGIN);
 
@@ -40,6 +37,9 @@ api.getFilms()
     statisticComponent = new StatisticComponent(filmsModel);
     render(siteMain, statisticComponent);
     statisticComponent.hide();
+    const watchedFilms = getWatchedFilms(filmsModel.getFilms());
+    const userRank = getUserRank(watchedFilms.length);
+    render(siteHeader, new UserRaitingComponent(userRank));
   });
 
 mainNavigationComponent.setOnViewChange((clickedItem) => {

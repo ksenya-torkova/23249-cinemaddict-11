@@ -71,15 +71,19 @@ export default class AllFilmsController {
   }
 
   _onDataChange(oldData, newData) {
-    const isSuccess = this._filmsModel.updateFilm(oldData.id, newData);
+    this._api.updateFilm(oldData.id, newData)
+      .then((filmModel) => {
+        const isSuccess = this._filmsModel.updateFilm(oldData.id, filmModel);
 
-    if (isSuccess) {
-      [...this._shownFilmControllers, ...this._mainFilmsControllers].forEach((controller) => {
-        if (controller._film.id === oldData.id) {
-          controller.render(newData);
+        if (isSuccess) {
+          [...this._shownFilmControllers, ...this._mainFilmsControllers].forEach((controller) => {
+            if (controller._film.id === oldData.id) {
+              controller.render(filmModel);
+              this._updateFilms(this._shownFilmsAmount);
+            }
+          });
         }
       });
-    }
   }
 
   _onFilterChange() {

@@ -1,3 +1,4 @@
+import {formatDate, formatDuration} from './../utils/common';
 import AbstractComponent from './abstract-component.js';
 
 const createFilmTemplate = (film) => {
@@ -8,11 +9,11 @@ const createFilmTemplate = (film) => {
       <h3 class="film-card__title">${title}</h3>
       <p class="film-card__rating">${raiting}</p>
       <p class="film-card__info">
-        <span class="film-card__year">${date}</span>
-        <span class="film-card__duration">${duration}</span>
+        <span class="film-card__year">${formatDate(date)}</span>
+        <span class="film-card__duration">${formatDuration(duration)}</span>
         <span class="film-card__genre">${genres}</span>
       </p>
-      <img src="./images/posters/${poster}" alt="" class="film-card__poster">
+      <img src="${poster}" alt="" class="film-card__poster">
       <p class="film-card__description">${description}</p>
       <a class="film-card__comments">${commentsLength === 1 ? `${commentsLength} comment` : `${commentsLength} comments`}</a>
       <form class="film-card__controls">

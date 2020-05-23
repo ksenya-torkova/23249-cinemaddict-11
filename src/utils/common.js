@@ -25,11 +25,13 @@ const createComment = (comment) => {
 };
 
 const formatDate = (date) => {
-  return moment(date).format(`DD MMMM`);
+  return moment(date).format(`DD MMMM YYYY`);
 };
 
-const formatTime = (date) => {
-  return moment(date).format(`hh:mm`);
+const formatDuration = (duration) => {
+  const durationInMinutes = moment.duration(duration, `minutes`);
+
+  return `${durationInMinutes.hours()}h ${durationInMinutes.minutes()}m`;
 };
 
 const getRandomInteger = function (min, max) {
@@ -46,4 +48,4 @@ const getSubstring = (string, subtring) => {
   return string.substring(subtring.length);
 };
 
-export {checkEscKey, createComment, getRandomArrayItem, getRandomInteger, getSubstring, formatDate, formatTime};
+export {checkEscKey, createComment, getRandomArrayItem, getRandomInteger, getSubstring, formatDate, formatDuration};

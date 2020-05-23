@@ -3,12 +3,12 @@ import {generateCommentsForFilm} from './../mock/comments-mock.js';
 import PopupController from './popup-controller.js';
 import FilmComponent from './../components/film.js';
 import CommentsModel from './../models/comments-model.js';
+import FilmModel from './../models/film-model';
 
 const Mode = {
   DEFAULT: `default`,
   POPUP: `popup`,
 };
-
 
 export default class FilmController {
   constructor(container, onDataChange, onViewChange) {
@@ -48,25 +48,31 @@ export default class FilmController {
     this._filmComponent.setButtonAddClickHandler((evt) => {
       evt.preventDefault();
 
-      this._onDataChange(this._film, Object.assign({}, film, {
-        isWatchlist: !film.isWatchlist
-      }));
+      const updatedFilm = FilmModel.clone(film);
+      updatedFilm.isWatchlist = !film.isWatchlist;
+
+      this._onDataChange(this._film, updatedFilm);
+      this._film = updatedFilm;
     });
 
     this._filmComponent.setButtonFavoriteClickHandler((evt) => {
       evt.preventDefault();
 
-      this._onDataChange(this._film, Object.assign({}, film, {
-        isFavorites: !film.isFavorites
-      }));
+      const updatedFilm = FilmModel.clone(film);
+      updatedFilm.isFavorites = !film.isFavorites;
+
+      this._onDataChange(this._film, updatedFilm);
+      this._film = updatedFilm;
     });
 
     this._filmComponent.setButtonWatchedClickHandler((evt) => {
       evt.preventDefault();
 
-      this._onDataChange(this._film, Object.assign({}, film, {
-        isHistory: !film.isHistory
-      }));
+      const updatedFilm = FilmModel.clone(film);
+      updatedFilm.isHistory = !film.isHistory;
+
+      this._onDataChange(this._film, updatedFilm);
+      this._film = updatedFilm;
     });
 
     this._filmComponent.setCommentsAmountClickHandler((evt) => {
