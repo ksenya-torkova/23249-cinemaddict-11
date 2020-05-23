@@ -1,5 +1,5 @@
-
 import FilmModel from './models/film-model';
+import CommentModel from './models/comment-model';
 
 const Method = {
   DELETE: `DELETE`,
@@ -20,6 +20,15 @@ const API = class {
   constructor(authorization, endPoint) {
     this._authorization = authorization;
     this._endPoint = endPoint;
+  }
+
+  getComments(id) {
+    return this._load({
+      url: `comments/${id}`,
+    })
+
+    .then((response) => response.json())
+    .then(CommentModel.parseComments);
   }
 
   getFilms() {

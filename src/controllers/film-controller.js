@@ -1,5 +1,4 @@
 import {remove, render, replace} from './../utils/render.js';
-import {generateCommentsForFilm} from './../mock/comments-mock.js';
 import PopupController from './popup-controller.js';
 import FilmComponent from './../components/film.js';
 import CommentsModel from './../models/comments-model.js';
@@ -11,25 +10,28 @@ const Mode = {
 };
 
 export default class FilmController {
-  constructor(container, onDataChange, onViewChange) {
+  constructor(container, onDataChange, onViewChange, api) {
     this._container = container;
+    this._api = api;
     this._onDataChange = onDataChange;
     this._filmComponent = null;
     this._film = null;
     this._onViewChange = onViewChange;
     this._mode = Mode.DEFAULT;
     this._filmDetailsController = null;
-    this._commentsModel = null;
+    this._commentsModel = new CommentsModel();
   }
 
   destroy() {
     remove(this._filmComponent);
   }
 
-  _getComments() {
-    const comments = generateCommentsForFilm();
-    this._commentsModel = new CommentsModel();
-    this._commentsModel.setComments(comments);
+  _getComments(film) {
+    this._api.getComments(film.id)
+
+    .then((comments) => {
+      this._commentsModel.setComments(comments);
+    });
   }
 
   _openPopup(film) {
@@ -42,7 +44,7 @@ export default class FilmController {
     this._film = film;
     const oldFilmComponent = this._filmComponent;
 
-    this._getComments();
+    this._getComments(this._film);
     this._filmComponent = new FilmComponent(film, this._commentsModel.getComments().length);
 
     this._filmComponent.setButtonAddClickHandler((evt) => {

@@ -35,14 +35,14 @@ export default class Comments {
     return this._comments;
   }
 
-  removeComment(film, comments, id) {
-    const index = comments.findIndex((comment) => comment.id.toString() === id);
+  removeComment(id) {
+    const index = this._comments.findIndex((comment) => comment.id.toString() === id);
 
     if (index === -1) {
       return false;
     }
 
-    this._comments = [].concat(comments.slice(0, index), comments.slice(index + 1));
+    this._comments = [].concat(this._comments.slice(0, index), this._comments.slice(index + 1));
 
     this._callHandlers(this._dataChangeHandlers);
     return true;

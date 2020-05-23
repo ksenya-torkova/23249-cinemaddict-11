@@ -62,7 +62,7 @@ export default class AllFilmsController {
     this._onFilterChange = this._onFilterChange.bind(this);
     this._filmsModel.setFilterChangeHandlers(this._onFilterChange);
     this._mainFilmsControllers = [];
-    this._onLoadMoreButoonClickHandler = this._onLoadMoreButoonClickHandler.bind(this);
+    this._onLoadMoreButtonClickHandler = this._onLoadMoreButtonClickHandler.bind(this);
   }
 
   hide() {
@@ -90,7 +90,7 @@ export default class AllFilmsController {
     this._updateFilms(this._shownFilmsAmount);
   }
 
-  _onLoadMoreButoonClickHandler() {
+  _onLoadMoreButtonClickHandler() {
     const previousFilmsAmount = this._shownFilmsAmount;
     const films = this._filmsModel.getFiltredFilms();
     this._shownFilmsAmount += DOWNLOADED_CARDS_AMOUNT;
@@ -158,7 +158,7 @@ export default class AllFilmsController {
 
   _renderAllFilms(container, films, onDataChange, onViewChange) {
     return films.map((film) => {
-      const filmController = new FilmController(container, onDataChange, onViewChange);
+      const filmController = new FilmController(container, onDataChange, onViewChange, this._api);
 
       filmController.render(film);
 
@@ -179,7 +179,7 @@ export default class AllFilmsController {
     }
 
     render(this._filmsAllComponent.getElement(), this._loadMoreComponent);
-    this._loadMoreComponent.setClickHandler(this._onLoadMoreButoonClickHandler);
+    this._loadMoreComponent.setClickHandler(this._onLoadMoreButtonClickHandler);
   }
 
   show() {
