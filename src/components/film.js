@@ -1,18 +1,19 @@
+import {formatDate, formatDuration} from './../utils/common';
 import AbstractComponent from './abstract-component.js';
 
 const createFilmTemplate = (film) => {
-  const {description, duration, genres, isFavorites, isHistory, isWatchlist, name, poster, raiting, year, commentsLength} = film;
+  const {date, description, duration, genres, isFavorites, isHistory, isWatchlist, title, poster, raiting, commentsLength} = film;
 
   return (
     `<article class="film-card">
-      <h3 class="film-card__title">${name}</h3>
+      <h3 class="film-card__title">${title}</h3>
       <p class="film-card__rating">${raiting}</p>
       <p class="film-card__info">
-        <span class="film-card__year">${year}</span>
-        <span class="film-card__duration">${duration}</span>
+        <span class="film-card__year">${formatDate(date)}</span>
+        <span class="film-card__duration">${formatDuration(duration)}</span>
         <span class="film-card__genre">${genres}</span>
       </p>
-      <img src="./images/posters/${poster}" alt="" class="film-card__poster">
+      <img src="${poster}" alt="" class="film-card__poster">
       <p class="film-card__description">${description}</p>
       <a class="film-card__comments">${commentsLength === 1 ? `${commentsLength} comment` : `${commentsLength} comments`}</a>
       <form class="film-card__controls">

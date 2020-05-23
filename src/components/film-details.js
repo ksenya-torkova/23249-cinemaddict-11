@@ -1,7 +1,10 @@
+import {formatDate, formatDuration} from './../utils/common';
 import AbstractSmartComponent from './abstract-smart-component.js';
 
 const createFilmDetailsTemplate = (film) => {
-  const {actors, country, day, description, director, duration, genre, isFavorites, isHistory, isWatchlist, month, name, poster, raiting, writers, year} = film;
+  const {actors, ageRating, country, date, description, director, duration,
+    genres, isFavorites, isHistory, isWatchlist, poster, raiting, title, titleAlternative, writers,
+  } = film;
 
   return (
     `<section class="film-details">
@@ -12,16 +15,16 @@ const createFilmDetailsTemplate = (film) => {
           </div>
           <div class="film-details__info-wrap">
             <div class="film-details__poster">
-              <img class="film-details__poster-img" src="./images/posters/${poster}" alt="">
+              <img class="film-details__poster-img" src="${poster}" alt="">
 
-              <p class="film-details__age">18+</p>
+              <p class="film-details__age">${ageRating}+</p>
             </div>
 
             <div class="film-details__info">
               <div class="film-details__info-head">
                 <div class="film-details__title-wrap">
-                  <h3 class="film-details__title">${name}</h3>
-                  <p class="film-details__title-original">Original: ${name}</p>
+                  <h3 class="film-details__title">${title}</h3>
+                  <p class="film-details__title-original">Original: ${titleAlternative}</p>
                 </div>
 
                 <div class="film-details__rating">
@@ -44,11 +47,11 @@ const createFilmDetailsTemplate = (film) => {
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Release Date</td>
-                  <td class="film-details__cell">${day} ${month} ${year}</td>
+                  <td class="film-details__cell">${formatDate(date)}</td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Runtime</td>
-                  <td class="film-details__cell">${duration}</td>
+                  <td class="film-details__cell">${formatDuration(duration)}</td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Country</td>
@@ -57,9 +60,7 @@ const createFilmDetailsTemplate = (film) => {
                 <tr class="film-details__row">
                   <td class="film-details__term">Genres</td>
                   <td class="film-details__cell">
-                    <span class="film-details__genre">${genre}</span>
-                    <span class="film-details__genre"></span>
-                    <span class="film-details__genre"></span>
+                    <span class="film-details__genre">${genres}</span>
                   </td>
                 </tr>
               </table>

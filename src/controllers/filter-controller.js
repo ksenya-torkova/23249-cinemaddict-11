@@ -9,14 +9,14 @@ const getFilterAmount = (cards, filterType) => {
 };
 
 export default class FilterController {
-  constructor(container, filmModel) {
+  constructor(container, filmsModel) {
     this._container = container;
-    this._filmModel = filmModel;
+    this._filmsModel = filmsModel;
     this._filterComponent = null;
     this._activeFilterType = FilterType.ALL;
     this._onDataChange = this._onDataChange.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
-    this._filmModel.setDataChangeHandlers(this._onDataChange);
+    this._filmsModel.setDataChangeHandlers(this._onDataChange);
   }
 
   _onDataChange() {
@@ -25,12 +25,12 @@ export default class FilterController {
 
   _onFilterChange(filterType) {
     this._activeFilterType = filterType;
-    this._filmModel.setFilter(filterType);
+    this._filmsModel.setFilter(filterType);
   }
 
   render() {
     const filters = Object.values(FilterType).map((filterType) => {
-      const count = filterType === FilterType.ALL ? this._filmModel.getFilms().length : getFilterAmount(this._filmModel.getFilms(), filterType);
+      const count = filterType === FilterType.ALL ? this._filmsModel.getFilms().length : getFilterAmount(this._filmsModel.getFilms(), filterType);
 
       return {
         filterType,
