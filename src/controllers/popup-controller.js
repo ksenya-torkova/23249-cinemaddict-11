@@ -4,6 +4,7 @@ import {remove, render} from './../utils/render.js';
 import {checkEscKey} from './../utils/common.js';
 import FilmDetailsComponent from './../components/film-details.js';
 import CommentariesController from './commentaries-controller.js';
+import FilmModel from './../models/film-model';
 
 export default class PopupController {
   constructor(film, commentsModel, onDataChange, onViewChange) {
@@ -45,21 +46,27 @@ export default class PopupController {
     });
 
     this._filmDetailsComponent.setButtonAddClickHandler(() => {
-      this._onDataChange(this._film, Object.assign({}, this._film, {
-        isWatchlist: !this._film.isWatchlist
-      }));
+      const updatedFilm = FilmModel.clone(this._film);
+      updatedFilm.isWatchlist = !this._film.isWatchlist;
+
+      this._onDataChange(this._film, updatedFilm);
+      this._film = updatedFilm;
     });
 
     this._filmDetailsComponent.setButtonFavoriteClickHandler(() => {
-      this._onDataChange(this._film, Object.assign({}, this._film, {
-        isFavorites: !this._film.isFavorites
-      }));
+      const updatedFilm = FilmModel.clone(this._film);
+      updatedFilm.isFavorites = !this._film.isFavorites;
+
+      this._onDataChange(this._film, updatedFilm);
+      this._film = updatedFilm;
     });
 
     this._filmDetailsComponent.setButtonWatchedClickHandler(() => {
-      this._onDataChange(this._film, Object.assign({}, this._film, {
-        isHistory: !this._film.isHistory
-      }));
+      const updatedFilm = FilmModel.clone(this._film);
+      updatedFilm.isHistory = !this._film.isHistory;
+
+      this._onDataChange(this._film, updatedFilm);
+      this._film = updatedFilm;
     });
 
     this._filmDetailsComponent.setCloseButtonClickHandler(() => {

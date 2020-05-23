@@ -35,6 +35,7 @@ export default class FilmController {
   }
 
   _openPopup(film) {
+    this.setDefaultView();
     this._filmDetailsController = new PopupController(film, this._commentsModel, this._onDataChange, this._onViewChange);
     this._filmDetailsController.render();
     this._mode = Mode.POPUP;
