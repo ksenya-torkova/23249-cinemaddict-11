@@ -1,5 +1,5 @@
 import {formatDate, formatDuration} from './../utils/common';
-import AbstractComponent from './abstract-component.js';
+import AbstractComponent from './abstract-component';
 
 const createFilmTemplate = (film) => {
   const {date, description, duration, genres, isFavorites, isHistory, isWatchlist, title, poster, raiting, commentsLength} = film;

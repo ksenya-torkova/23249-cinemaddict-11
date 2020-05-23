@@ -1,8 +1,8 @@
-import {getUserRank} from './../components/user-raiting.js';
-import {getWatchedFilms} from "../utils/filter.js";
-import Chart from "chart.js";
+import {getUserRank} from './../components/user-raiting';
+import {getWatchedFilms} from '../utils/filter';
+import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import AbstractSmartComponent from "../components/abstract-smart-component.js";
+import AbstractSmartComponent from '../components/abstract-smart-component';
 
 const MINUTES_IN_HOUR = 60;
 

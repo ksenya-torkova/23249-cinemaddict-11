@@ -1,5 +1,5 @@
 import {formatDate, formatDuration} from './../utils/common';
-import AbstractSmartComponent from './abstract-smart-component.js';
+import AbstractSmartComponent from './abstract-smart-component';
 
 const createFilmDetailsTemplate = (film) => {
   const {actors, ageRating, country, date, description, director, duration,

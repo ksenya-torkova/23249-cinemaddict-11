@@ -1,5 +1,5 @@
-import {createComment} from './../utils/common.js';
-import AbstractComponent from './abstract-component.js';
+import {createComment} from './../utils/common';
+import AbstractComponent from './abstract-component';
 
 const createCommentsList = (comments) => {
   const createCommentMarkup = comments

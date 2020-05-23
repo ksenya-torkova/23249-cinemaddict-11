@@ -1,6 +1,6 @@
 import {ANCHOR_PREFIX, Tag} from './../utils/const';
-import {getSubstring} from './../utils/common.js';
-import AbstractComponent from './abstract-component.js';
+import {getSubstring} from './../utils/common';
+import AbstractComponent from './abstract-component';
 
 const createMainNavigationTemplate = () => {
   return (

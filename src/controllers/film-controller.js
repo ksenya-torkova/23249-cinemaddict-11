@@ -1,7 +1,7 @@
-import {remove, render, replace} from './../utils/render.js';
-import PopupController from './popup-controller.js';
-import FilmComponent from './../components/film.js';
-import CommentsModel from './../models/comments-model.js';
+import {remove, render, replace} from './../utils/render';
+import PopupController from './popup-controller';
+import FilmComponent from './../components/film';
+import CommentsModel from './../models/comments-model';
 import FilmModel from './../models/film-model';
 
 const Mode = {

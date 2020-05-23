@@ -1,4 +1,4 @@
-import {FilterType} from "./const.js";
+import {FilterType} from './const';
 
 const getFavoriteFilms = (films) => {
   return films.filter((film) => film.isFavorites);

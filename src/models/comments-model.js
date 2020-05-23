@@ -1,5 +1,5 @@
-import {createComment, getRandomArrayItem, getRandomInteger} from './../utils/common.js';
-import {NAMES, TIMES} from './../utils/const.js';
+import {createComment, getRandomArrayItem, getRandomInteger} from './../utils/common';
+import {NAMES, TIMES} from './../utils/const';
 
 export default class Comments {
   constructor() {

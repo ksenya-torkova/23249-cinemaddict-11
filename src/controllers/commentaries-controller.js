@@ -1,7 +1,7 @@
-import {render, replace} from './../utils/render.js';
-import CommentContainerComponent from './../components/comment-container.js';
-import CommentsListComponent from './../components/comments-list.js';
-import CommentNewComponent from './../components/comment-new.js';
+import {render, replace} from './../utils/render';
+import CommentContainerComponent from './../components/comment-container';
+import CommentsListComponent from './../components/comments-list';
+import CommentNewComponent from './../components/comment-new';
 
 export default class CommentariesController {
   constructor(container, film, commentModel, onDataChange) {

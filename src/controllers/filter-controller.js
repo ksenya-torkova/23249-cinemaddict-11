@@ -1,6 +1,6 @@
-import {FilterType} from './../utils/const.js';
-import {render, RenderPosition, replace} from './../utils/render.js';
-import FilterComponent from './../components/filter.js';
+import {FilterType} from './../utils/const';
+import {render, RenderPosition, replace} from './../utils/render';
+import FilterComponent from './../components/filter';
 
 const getFilterAmount = (cards, filterType) => {
   const result = cards.filter((card) => card[filterType] === true);

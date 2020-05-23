@@ -1,9 +1,9 @@
-import {encode} from "he";
-import {siteBody} from './../utils/const.js';
-import {remove, render} from './../utils/render.js';
-import {checkEscKey} from './../utils/common.js';
-import FilmDetailsComponent from './../components/film-details.js';
-import CommentariesController from './commentaries-controller.js';
+import {encode} from 'he';
+import {siteBody} from './../utils/const';
+import {remove, render} from './../utils/render';
+import {checkEscKey} from './../utils/common';
+import FilmDetailsComponent from './../components/film-details';
+import CommentariesController from './commentaries-controller';
 import FilmModel from './../models/film-model';
 
 export default class PopupController {

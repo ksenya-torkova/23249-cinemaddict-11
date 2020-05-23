@@ -1,12 +1,12 @@
-import {siteMain, SortType} from './../utils/const.js';
-import {remove, render, RenderPosition} from './../utils/render.js';
-import FilmsAllComponent from './../components/films-all.js';
-import LoadMoreComponent from './../components/load-more.js';
-import NoFilmsComponent from './../components/no-films.js';
-import SortComponent from './../components/sort.js';
-import FilmController from './film-controller.js';
-import FilmsCommentedComponent from './../components/films-commented.js';
-import FilmsRatedComponent from './../components/films-rated.js';
+import {siteMain, SortType} from './../utils/const';
+import {remove, render, RenderPosition} from './../utils/render';
+import FilmsAllComponent from './../components/films-all';
+import LoadMoreComponent from './../components/load-more';
+import NoFilmsComponent from './../components/no-films';
+import SortComponent from './../components/sort';
+import FilmController from './film-controller';
+import FilmsCommentedComponent from './../components/films-commented';
+import FilmsRatedComponent from './../components/films-rated';
 
 const DEFAULT_CARDS_AMOUNT = 5;
 const DOWNLOADED_CARDS_AMOUNT = 5;

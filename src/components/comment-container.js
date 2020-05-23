@@ -1,4 +1,4 @@
-import AbstractComponent from './abstract-component.js';
+import AbstractComponent from './abstract-component';
 
 const createCommentContainer = (amount) => {
   const commentDeclension = amount > 1 ? `Comments` : `Comment`;
