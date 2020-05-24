@@ -16,7 +16,9 @@ const createComment = (comment) => {
         <p class="film-details__comment-text">${commentText}</p>
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${userName}</span>
-          <span class="film-details__comment-day">${time}</span>
+          <span class="film-details__comment-day">
+          ${moment(time).fromNow()}
+          </span>
           <button class="film-details__comment-delete" type="button">Delete</button>
         </p>
       </div>
