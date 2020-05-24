@@ -1,6 +1,21 @@
 import {formatDate, formatDuration} from './../utils/common';
 import AbstractComponent from './abstract-component';
 
+const createGenreMarkup = (genre) => {
+  return `<span class="film-card__genre">${genre}</span>`;
+};
+
+const createGenresMarkup = (genres) => {
+  const genresMarkup = genres
+  .map(
+      (genre) => {
+        return createGenreMarkup(genre);
+      }
+  ).join(`\n`);
+
+  return genresMarkup;
+};
+
 const createFilmTemplate = (film) => {
   const {date, description, duration, genres, isFavorites, isHistory, isWatchlist, title, poster, raiting, commentsLength} = film;
 
@@ -11,7 +26,7 @@ const createFilmTemplate = (film) => {
       <p class="film-card__info">
         <span class="film-card__year">${formatDate(date)}</span>
         <span class="film-card__duration">${formatDuration(duration)}</span>
-        <span class="film-card__genre">${genres}</span>
+        <span class="film-card__genre">${createGenresMarkup(genres)}</span>
       </p>
       <img src="${poster}" alt="" class="film-card__poster">
       <p class="film-card__description">${description}</p>
