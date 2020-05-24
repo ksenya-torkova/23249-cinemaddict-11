@@ -1,6 +1,8 @@
 import {formatDate, formatDuration} from './../utils/common';
 import AbstractComponent from './abstract-component';
 
+const MAX_DESCRIPTION_LENGTH = 140;
+
 const createGenreMarkup = (genre) => {
   return `<span class="film-card__genre">${genre}</span>`;
 };
@@ -16,6 +18,14 @@ const createGenresMarkup = (genres) => {
   return genresMarkup;
 };
 
+const getFilmDescription = (description) => {
+  if (description.length <= MAX_DESCRIPTION_LENGTH) {
+    return description;
+  }
+
+  return `${description.slice(0, MAX_DESCRIPTION_LENGTH - 1)}...`;
+};
+
 const createFilmTemplate = (film) => {
   const {date, description, duration, genres, isFavorites, isHistory, isWatchlist, title, poster, raiting, commentsLength} = film;
 
@@ -29,7 +39,7 @@ const createFilmTemplate = (film) => {
         <span class="film-card__genre">${createGenresMarkup(genres)}</span>
       </p>
       <img src="${poster}" alt="" class="film-card__poster">
-      <p class="film-card__description">${description}</p>
+      <p class="film-card__description">${getFilmDescription(description)}</p>
       <a class="film-card__comments">${commentsLength === 1 ? `${commentsLength} comment` : `${commentsLength} comments`}</a>
       <form class="film-card__controls">
         <button class="film-card__controls-item button  film-card__controls-item--add-to-watchlist  ${isWatchlist ? `film-card__controls-item--active` : ``}">
