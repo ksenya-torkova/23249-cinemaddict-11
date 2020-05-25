@@ -1,3 +1,5 @@
+import {encode} from 'he';
+import {Tag} from './../utils/const';
 import AbstractComponent from './abstract-component';
 
 const createCommentNew = () => {
@@ -35,17 +37,48 @@ const createCommentNew = () => {
 };
 
 export default class CommentNew extends AbstractComponent {
+  _getNewComment() {
+    const textCommentElement = this._element.querySelector(`.film-details__comment-input`);
+
+    const comment = encode(textCommentElement.value);
+    const emotion = this._element.querySelector(`.film-details__add-emoji-label img`).alt;
+
+    if (!emotion || !comment) {
+      return null;
+    }
+
+    const date = new Date();
+
+    return {
+      comment,
+      date,
+      emotion,
+    };
+  }
+
   getTemplate() {
     return createCommentNew();
   }
 
   onEmojiListClick(handler) {
     this.getElement().querySelector(`.film-details__emoji-list`).addEventListener(`click`, (evt) => {
-      if (evt.target.tagName.toLowerCase() !== `img`) {
+      if (evt.target.tagName.toLowerCase() !== Tag.IMG) {
         return;
       }
 
       handler(evt);
+    });
+  }
+
+  setSubmitHandler(handler) {
+    const textCommentElement = this._element.querySelector(`.film-details__comment-input`);
+    textCommentElement.addEventListener(`keydown`, (evt) => {
+      if (evt.key === `Enter` && (evt.ctrlKey || evt.metaKey)) {
+        const newComment = this._getNewComment();
+
+        this._activeTextCommentField = textCommentElement;
+        handler(newComment);
+      }
     });
   }
 }

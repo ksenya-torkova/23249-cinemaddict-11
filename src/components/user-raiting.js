@@ -11,7 +11,7 @@ const userRanks = [
 const userRanksLimits = {
   [userRanks[0]]: 10,
   [userRanks[1]]: 20,
-  [userRanks[2]]: Infinity
+  [userRanks[2]]: Infinity,
 };
 
 let currentUserRank = ``;

@@ -42,9 +42,11 @@ const getSortedFilms = (films, sortType, from = 0, to = DEFAULT_CARDS_AMOUNT) =>
 };
 
 export default class AllFilmsController {
-  constructor(container, filmsModel, api) {
+  constructor(container, filmsModel, commentsModel, api) {
     this._container = container;
     this._filmsModel = filmsModel;
+    this._commentsModel = commentsModel;
+    this._comments = this._commentsModel.getComments();
     this._api = api;
     this._shownFilmControllers = [];
     this._shownFilmsAmount = DEFAULT_CARDS_AMOUNT;
@@ -63,11 +65,20 @@ export default class AllFilmsController {
     this._filmsModel.setFilterChangeHandlers(this._onFilterChange);
     this._mainFilmsControllers = [];
     this._onLoadMoreButtonClickHandler = this._onLoadMoreButtonClickHandler.bind(this);
+    this._onCommentChange = this._onCommentChange.bind(this);
   }
 
   hide() {
     this._container.hide();
     this._sortComponent.hide();
+  }
+
+  _onCommentChange(oldData, newData, commentId, comments) {
+    const isSuccess = this._commentsModel.updateComments(oldData.id, commentId, comments) && this._filmsModel.updateFilm(oldData.id, newData);
+
+    if (isSuccess) {
+      this._updateFilms(this._shownFilmsAmount);
+    }
   }
 
   _onDataChange(oldData, newData) {
@@ -158,9 +169,9 @@ export default class AllFilmsController {
 
   _renderAllFilms(container, films, onDataChange, onViewChange) {
     return films.map((film) => {
-      const filmController = new FilmController(container, onDataChange, onViewChange, this._api);
+      const filmController = new FilmController(container, onDataChange, onViewChange, this._onCommentChange, this._api, this._commentsModel);
 
-      filmController.render(film);
+      filmController.render(film, this._comments);
 
       return filmController;
     });

@@ -1,6 +1,6 @@
 export default class Film {
   constructor(data) {
-    this.actors = (data[`film_info`][`actors`]).slice(`,`).join(`, `);
+    this.actors = data[`film_info`][`actors`];
     this.ageRating = data[`film_info`][`age_rating`];
     this.comments = data[`comments`];
     this.commentsLength = data[`comments`].length;
@@ -19,7 +19,7 @@ export default class Film {
     this.title = data[`film_info`][`title`];
     this.titleAlternative = data[`film_info`][`alternative_title`];
     this.watchingDate = new Date(data[`user_details`][`watching_date`]);
-    this.writers = (data[`film_info`][`writers`]).slice(`,`).join(`, `);
+    this.writers = data[`film_info`][`writers`];
   }
 
   toRAW() {

@@ -16,4 +16,12 @@ export default class Comment {
   static parseComments(data) {
     return data.map(Comment.parseComment);
   }
+
+  toRAW() {
+    return {
+      "comment": this.commentText,
+      "date": this.time,
+      "emotion": this.emojiType,
+    };
+  }
 }
