@@ -43,28 +43,42 @@ export default class CommentariesController {
     this._commentsListComponent = new CommentsListComponent(this._commentModel.getCommentsById(this._film.id));
     this._onEmojiListClick();
 
-    this._commentsListComponent.setDeleteButtonClickHandler((removeCommentId) => {
+    this._commentsListComponent.setDeleteButtonClickHandler((removeCommentId, commentBlock) => {
+      this._commentsListComponent.disableDeleteButton();
       const newFilm = FilmModel.clone(this._film);
 
       newFilm.comments = newFilm.comments.filter((commentId) => commentId !== removeCommentId);
 
       this._api.deleteComment(removeCommentId)
         .then(() => {
+          commentBlock.remove();
           this._onCommentChange(this._film, newFilm, removeCommentId, null);
+          this._commentContainerComponent.changeCommentsAmount(this._commentModel.getCommentsById(this._film.id).length);
         })
+
         .catch(() => {
+          this._commentsListComponent.enableDeleteButton();
+          this._commentsListComponent.shake();
         });
     });
 
     this._commentNewComponent.setSubmitHandler((newComment) => {
       const newFilm = FilmModel.clone(this._film);
+      this._commentNewComponent.disableActiveTextCommentField();
 
       this._api.createComment(this._film.id, newComment)
         .then((comments) => {
           newFilm.comments = comments.map((comment) => comment.id);
           this._onCommentChange(this._film, newFilm, null, comments);
+          this._commentContainerComponent.changeCommentsAmount(this._commentModel.getCommentsById(this._film.id).length);
+          this._commentsListComponent.updateComments(comments);
+          this._commentNewComponent.clear();
+          this._commentNewComponent.enableTextCommentField();
         })
+
         .catch(() => {
+          this._commentNewComponent.shakeNewComment();
+          this._commentNewComponent.enableTextCommentField();
         });
     });
 

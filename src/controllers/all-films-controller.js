@@ -77,7 +77,7 @@ export default class AllFilmsController {
     const isSuccess = this._commentsModel.updateComments(oldData.id, commentId, comments) && this._filmsModel.updateFilm(oldData.id, newData);
 
     if (isSuccess) {
-      this._updateFilms(this._shownFilmsAmount);
+      this._onDataChange(oldData, newData);
     }
   }
 
@@ -155,21 +155,27 @@ export default class AllFilmsController {
     if (topRatedFilms) {
       const filmsRatedContainer = this._filmsRatedComponent.getElement().querySelector(`.films-list__container`);
       render(this._container.getElement(), this._filmsRatedComponent);
-      const additionalFilms = this._renderAllFilms(filmsRatedContainer, topRatedFilms, this._onDataChange, this._onViewChange);
+
+      const additionalFilms = this._renderAllFilms(filmsRatedContainer, topRatedFilms, this._onDataChange, this._onViewChange,
+          this._onCommentChange, this._api, this._commentsModel);
+
       this._shownFilmControllers = this._shownFilmControllers.concat(additionalFilms);
     }
 
     if (mostCommentedFilms) {
       const filmsCommentedContainer = this._filmsCommentedComponent.getElement().querySelector(`.films-list__container`);
       render(this._container.getElement(), this._filmsCommentedComponent);
-      const additionalFilms = this._renderAllFilms(filmsCommentedContainer, mostCommentedFilms, this._onDataChange, this._onViewChange);
+
+      const additionalFilms = this._renderAllFilms(filmsCommentedContainer, mostCommentedFilms, this._onDataChange, this._onViewChange,
+          this._onCommentChange, this._api, this._commentsModel);
+
       this._shownFilmControllers = this._shownFilmControllers.concat(additionalFilms);
     }
   }
 
-  _renderAllFilms(container, films, onDataChange, onViewChange) {
+  _renderAllFilms(container, films, onDataChange, onViewChange, onCommentChange, api, commentsModel) {
     return films.map((film) => {
-      const filmController = new FilmController(container, onDataChange, onViewChange, this._onCommentChange, this._api, this._commentsModel);
+      const filmController = new FilmController(container, onDataChange, onViewChange, onCommentChange, api, commentsModel);
 
       filmController.render(film, this._comments);
 
@@ -178,7 +184,9 @@ export default class AllFilmsController {
   }
 
   _renderMainFilms(films) {
-    const mainFilms = this._renderAllFilms(this._filmsAllContainer, films.slice(0, this._shownFilmsAmount), this._onDataChange, this._onViewChange);
+    const mainFilms = this._renderAllFilms(this._filmsAllContainer, films.slice(0, this._shownFilmsAmount), this._onDataChange, this._onViewChange,
+        this._onCommentChange, this._api, this._commentsModel);
+
     this._mainFilmsControllers = this._mainFilmsControllers.concat(mainFilms);
   }
 

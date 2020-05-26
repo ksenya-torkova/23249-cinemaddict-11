@@ -1,9 +1,5 @@
-const RenderPosition = {
-  AFTER_BEGIN: `afterbegin`,
-  AFTER_END: `afterend`,
-  BEFORE_BEGIN: `beforebegin`,
-  BEFORE_END: `beforeend`
-};
+const SHAKE_ANIMATION_TIMEOUT = 600;
+const MILLISECONDS_IN_SECONDS = 1000;
 
 const createElement = (template) => {
   const newElement = document.createElement(`div`);
@@ -28,6 +24,13 @@ const render = (container, component, place = RenderPosition.BEFORE_END) => {
   }
 };
 
+const RenderPosition = {
+  AFTER_BEGIN: `afterbegin`,
+  AFTER_END: `afterend`,
+  BEFORE_BEGIN: `beforebegin`,
+  BEFORE_END: `beforeend`
+};
+
 const replace = (newComponent, oldComponent) => {
   const parentElement = oldComponent.getElement().parentElement;
   const newElement = newComponent.getElement();
@@ -40,4 +43,12 @@ const replace = (newComponent, oldComponent) => {
   }
 };
 
-export {createElement, remove, render, RenderPosition, replace};
+const shake = (element) => {
+  element.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / MILLISECONDS_IN_SECONDS}s`;
+
+  setTimeout(() => {
+    element.style.animation = ``;
+  }, SHAKE_ANIMATION_TIMEOUT);
+};
+
+export {createElement, remove, render, RenderPosition, replace, shake};
