@@ -40,40 +40,58 @@ const createCommentNew = () => {
 export default class CommentNew extends AbstractComponent {
   constructor() {
     super();
-    this._textCommentField = null;
+    this._textField = null;
     this._imgContainer = null;
-  }
-
-  _addBorderToComment() {
-    this._textCommentField.style.border = `1px solid #ff0000`;
-  }
-
-  _addBorderToImgContainer() {
-    this._imgContainer.style.border = `1px solid #ff0000`;
   }
 
   clear() {
     const emoji = this.getElement().querySelector(`.film-details__add-emoji-label img`);
     const textarea = this.getElement().querySelector(`.film-details__comment-input`);
+    const checkedInput = this.getElement().querySelector(`.film-details__emoji-item:checked`);
+
+    if (checkedInput) {
+      checkedInput.checked = false;
+    }
 
     emoji.remove();
     textarea.value = ``;
   }
 
   disableTextCommentField() {
-    this._textCommentField.disabled = true;
+    this._textField.disabled = true;
   }
 
   enableTextCommentField() {
-    this._textCommentField.disabled = false;
+    this._textField.disabled = false;
   }
 
-  _removeBorderFromComment() {
-    this._textCommentField.style.border = `1px solid transparent`;
+  getTemplate() {
+    return createCommentNew();
   }
 
-  _removeBorderFromImgContainer() {
-    this._imgContainer.style.border = `1px solid transparent`;
+  setSubmitHandler(handler) {
+    const textCommentElement = this._element.querySelector(`.film-details__comment-input`);
+    this._textField = textCommentElement;
+
+    textCommentElement.addEventListener(`keydown`, (evt) => {
+      if (evt.key === `Enter` && (evt.ctrlKey || evt.metaKey)) {
+        const newComment = this._getNewComment();
+
+        handler(newComment);
+      }
+    });
+  }
+
+  shakeNewComment() {
+    shake(this.getElement());
+  }
+
+  _addBorderToComment() {
+    this._textField.style.border = `1px solid #ff0000`;
+  }
+
+  _addBorderToImgContainer() {
+    this._imgContainer.style.border = `1px solid #ff0000`;
   }
 
   _getNewComment() {
@@ -108,8 +126,12 @@ export default class CommentNew extends AbstractComponent {
     };
   }
 
-  getTemplate() {
-    return createCommentNew();
+  _removeBorderFromComment() {
+    this._textField.style.border = `1px solid transparent`;
+  }
+
+  _removeBorderFromImgContainer() {
+    this._imgContainer.style.border = `1px solid transparent`;
   }
 
   onEmojiListClick(handler) {
@@ -120,22 +142,5 @@ export default class CommentNew extends AbstractComponent {
 
       handler(evt);
     });
-  }
-
-  setSubmitHandler(handler) {
-    const textCommentElement = this._element.querySelector(`.film-details__comment-input`);
-    this._textCommentField = textCommentElement;
-
-    textCommentElement.addEventListener(`keydown`, (evt) => {
-      if (evt.key === `Enter` && (evt.ctrlKey || evt.metaKey)) {
-        const newComment = this._getNewComment();
-
-        handler(newComment);
-      }
-    });
-  }
-
-  shakeNewComment() {
-    shake(this.getElement());
   }
 }

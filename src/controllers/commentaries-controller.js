@@ -9,27 +9,13 @@ export default class CommentariesController {
     this._container = container;
     this._film = film;
     this._api = api;
+    this._commentModel = commentModel;
     this._commentNewComponent = null;
     this._commentsListComponent = null;
     this._commentContainerComponent = null;
     this._comments = null;
-    this._commentModel = commentModel;
     this._commentsContainer = null;
     this._onCommentChange = onCommentChange;
-  }
-
-  _onEmojiListClick() {
-    this._commentNewComponent.onEmojiListClick((evt) => {
-      const emojiContainer = this._commentNewComponent.getElement().querySelector(`.film-details__add-emoji-label`);
-      const newEmoji = evt.target.cloneNode();
-      const oldEmoji = this._commentNewComponent.getElement().querySelector(`.film-details__add-emoji-label img`);
-
-      if (oldEmoji) {
-        emojiContainer.replaceChild(newEmoji, oldEmoji);
-      } else {
-        emojiContainer.append(newEmoji);
-      }
-    });
   }
 
   render() {
@@ -53,7 +39,7 @@ export default class CommentariesController {
         .then(() => {
           commentBlock.remove();
           this._onCommentChange(this._film, newFilm, removeCommentId, null);
-          this._commentContainerComponent.changeCommentsAmount(this._commentModel.getCommentsById(this._film.id).length);
+          this._commentContainerComponent.changeAmount(this._commentModel.getCommentsById(this._film.id).length);
         })
 
         .catch(() => {
@@ -70,7 +56,7 @@ export default class CommentariesController {
         .then((comments) => {
           newFilm.comments = comments.map((comment) => comment.id);
           this._onCommentChange(this._film, newFilm, null, comments);
-          this._commentContainerComponent.changeCommentsAmount(this._commentModel.getCommentsById(this._film.id).length);
+          this._commentContainerComponent.changeAmount(this._commentModel.getCommentsById(this._film.id).length);
           this._commentsListComponent.updateComments(comments);
           this._commentNewComponent.clear();
           this._commentNewComponent.enableTextCommentField();
@@ -84,5 +70,19 @@ export default class CommentariesController {
 
     render(this._commentsContainer, this._commentsListComponent);
     render(this._commentsContainer, this._commentNewComponent);
+  }
+
+  _onEmojiListClick() {
+    this._commentNewComponent.onEmojiListClick((evt) => {
+      const emojiContainer = this._commentNewComponent.getElement().querySelector(`.film-details__add-emoji-label`);
+      const newEmoji = evt.target.cloneNode();
+      const oldEmoji = this._commentNewComponent.getElement().querySelector(`.film-details__add-emoji-label img`);
+
+      if (oldEmoji) {
+        emojiContainer.replaceChild(newEmoji, oldEmoji);
+      } else {
+        emojiContainer.append(newEmoji);
+      }
+    });
   }
 }

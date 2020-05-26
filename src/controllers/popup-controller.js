@@ -10,32 +10,19 @@ export default class PopupController {
     this._film = film;
     this._api = api;
     this._commentsModel = commentsModel;
+    this._commentariesController = null;
     this._filmDetailsComponent = new FilmDetailsComponent(this._film);
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
     this._onCommentChange = onCommentChange;
-    this._commentariesController = null;
-    this.closePopup = this.closePopup.bind(this);
-    this._closeFilmPopupOnEscKeyDown = this._closeFilmPopupOnEscKeyDown.bind(this);
+    this.close = this.close.bind(this);
+    this._closeOnEscKeyDown = this._closeOnEscKeyDown.bind(this);
   }
 
-  closePopup() {
+  close() {
     remove(this._filmDetailsComponent);
     siteBody.classList.remove(`hide-overflow`);
-    document.removeEventListener(`keydown`, this._closeFilmPopupOnEscKeyDown);
-  }
-
-  _closeFilmPopupOnEscKeyDown(evt) {
-    const isEscKey = checkEscKey(evt);
-
-    if (isEscKey) {
-      this.closePopup();
-    }
-  }
-
-  _loadComments(container, film) {
-    this._commentariesController = new CommentariesController(container, film, this._commentsModel, this._onCommentChange, this._api);
-    this._commentariesController.render();
+    document.removeEventListener(`keydown`, this._closeOnEscKeyDown);
   }
 
   render() {
@@ -43,7 +30,7 @@ export default class PopupController {
 
     siteBody.classList.add(`hide-overflow`);
 
-    document.addEventListener(`keydown`, this._closeFilmPopupOnEscKeyDown);
+    document.addEventListener(`keydown`, this._closeOnEscKeyDown);
 
     this._filmDetailsComponent.setButtonAddClickHandler(() => {
       const updatedFilm = FilmModel.clone(this._film);
@@ -70,11 +57,24 @@ export default class PopupController {
     });
 
     this._filmDetailsComponent.setCloseButtonClickHandler(() => {
-      this.closePopup(this._filmDetailsComponent);
+      this.close(this._filmDetailsComponent);
     });
 
     this._loadComments(this._filmDetailsComponent, this._film);
 
     render(siteBody, this._filmDetailsComponent);
+  }
+
+  _loadComments(container, film) {
+    this._commentariesController = new CommentariesController(container, film, this._commentsModel, this._onCommentChange, this._api);
+    this._commentariesController.render();
+  }
+
+  _closeOnEscKeyDown(evt) {
+    const isEscKey = checkEscKey(evt);
+
+    if (isEscKey) {
+      this.close();
+    }
   }
 }

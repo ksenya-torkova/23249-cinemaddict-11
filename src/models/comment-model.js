@@ -2,11 +2,19 @@ import moment from 'moment';
 
 export default class Comment {
   constructor(data) {
-    this.commentText = data[`comment`];
     this.emojiType = data[`emotion`];
     this.id = data[`id`];
+    this.text = data[`comment`];
     this.time = moment(new Date(data[`date`])).format(`YYYY/MM/DD HH:mm`);
     this.userName = data[`author`];
+  }
+
+  toRAW() {
+    return {
+      "comment": this.text,
+      "date": this.time,
+      "emotion": this.emojiType,
+    };
   }
 
   static parseComment(data) {
@@ -15,13 +23,5 @@ export default class Comment {
 
   static parseComments(data) {
     return data.map(Comment.parseComment);
-  }
-
-  toRAW() {
-    return {
-      "comment": this.commentText,
-      "date": this.time,
-      "emotion": this.emojiType,
-    };
   }
 }

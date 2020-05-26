@@ -20,7 +20,7 @@ export default class CommentContainer extends AbstractComponent {
     this._commentsLength = commentsLength;
   }
 
-  changeCommentsAmount(amount) {
+  changeAmount(amount) {
     const counter = this.getElement().querySelector(`.film-details__comments-count`);
     counter.textContent = amount;
   }

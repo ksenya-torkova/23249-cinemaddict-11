@@ -1,3 +1,4 @@
+import {Tag} from './../utils/const';
 import {getUserRank} from './../components/user-raiting';
 import {getWatchedFilms} from '../utils/filter';
 import Chart from 'chart.js';
@@ -139,11 +140,21 @@ export default class Statistic extends AbstractSmartComponent {
     this._filmsByPeriod = getFilmsByPeriod(this._watchedFilms, Period.ALL);
     this._period = Period.ALL;
     this._genres = getGenres(this._watchedFilms);
-    this.setPeriodChange();
+    this._onPeriodChange();
   }
 
   getTemplate() {
     return createStatisticksTemplate(this._films);
+  }
+
+  recoveryListeners() {
+    this._onPeriodChange();
+  }
+
+  show() {
+    super.show();
+    this._period = Period.ALL;
+    this._rerender();
   }
 
   _renderChart(films) {
@@ -210,18 +221,6 @@ export default class Statistic extends AbstractSmartComponent {
     });
   }
 
-  setPeriodChange() {
-    this.getElement().querySelector(`.statistic__filters`)
-      .addEventListener(`change`, (evt) => {
-        if (evt.target.tagName !== `INPUT`) {
-          return;
-        }
-
-        this._period = evt.target.value;
-        this._rerender();
-      });
-  }
-
   _rerender() {
     this._watchedFilms = getWatchedFilms(this._filmsModel.getFilms());
     this._filmsByPeriod = getFilmsByPeriod(this._watchedFilms, this._period);
@@ -233,13 +232,14 @@ export default class Statistic extends AbstractSmartComponent {
     }
   }
 
-  recoveryListeners() {
-    this.setPeriodChange();
-  }
+  _onPeriodChange() {
+    this.getElement().querySelector(`.statistic__filters`).addEventListener(`change`, (evt) => {
+      if (evt.target.tagName.toLowerCase() !== Tag.INPUT) {
+        return;
+      }
 
-  show() {
-    super.show();
-    this._period = Period.ALL;
-    this._rerender();
+      this._period = evt.target.value;
+      this._rerender();
+    });
   }
 }

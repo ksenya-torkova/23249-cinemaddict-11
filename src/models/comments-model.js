@@ -4,12 +4,6 @@ export default class Comments {
     this._dataChangeHandlers = [];
   }
 
-  _callHandlers(handlers) {
-    handlers.forEach((handler) => {
-      handler();
-    });
-  }
-
   getComments() {
     return this._comments;
   }
@@ -37,5 +31,11 @@ export default class Comments {
     }
 
     return true;
+  }
+
+  _callHandlers(handlers) {
+    handlers.forEach((handler) => {
+      handler();
+    });
   }
 }
