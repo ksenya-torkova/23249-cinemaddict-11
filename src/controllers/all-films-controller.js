@@ -19,7 +19,7 @@ const getTopRated = (cardsData) => {
 };
 
 const getMostCommented = (cardsData) => {
-  const result = cardsData.slice().sort((a, b) => b.commentsAmount - a.commentsAmount);
+  const result = cardsData.slice().sort((a, b) => b.commentsLength - a.commentsLength);
   return result.slice(0, ADDITIONAL_CARDS_AMOUNT);
 };
 
@@ -29,7 +29,7 @@ const getSortedFilms = (films, sortType, from = 0, to = DEFAULT_CARDS_AMOUNT) =>
 
   switch (sortType) {
     case SortType.DATE:
-      sortedFilms = showingFilms.sort((a, b) => b.year - a.year);
+      sortedFilms = showingFilms.sort((a, b) => b.date - a.date);
       break;
     case SortType.RATING:
       sortedFilms = showingFilms.sort((a, b) => b.raiting - a.raiting);

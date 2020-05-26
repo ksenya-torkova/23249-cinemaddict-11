@@ -74,18 +74,19 @@ const createStatisticksTemplate = (films) => {
   const durationMinutes = Math.round(summaryTime % (durationHours * MINUTES_IN_HOUR));
   const topGenre = Object.entries(getGenreCounter(getFilmsByPeriod(getWatchedFilms(films), Period.ALL), getGenres(getWatchedFilms(films))))
     .sort((a, b) => b[1] - a[1])[0];
-
   const durationHoursValue = durationHours ? durationHours : `0`;
   const durationMinutesValue = durationMinutes ? durationMinutes : `0`;
   const topGenreValue = topGenre[1] > 0 ? topGenre[0] : ``;
 
   return (
     `<section class="statistic">
-      <p class="statistic__rank">
+
+      ${getWatchedFilms(films).length > 0 ?
+      `<p class="statistic__rank">
         Your rank
         <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
         <span class="statistic__rank-label">${getUserRank(getWatchedFilms(films).length)}</span>
-      </p>
+      </p>` : ``}
 
       <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
         <p class="statistic__filters-description">Show stats:</p>

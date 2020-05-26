@@ -12,7 +12,7 @@ import MainNavigationComponent from './components/main-navigation';
 import UserRaitingComponent, {getUserRank} from './components/user-raiting';
 import StatisticComponent from './components/statistics';
 
-const AUTHORIZATION = `Basic dsLkewj0hE345i3r;`;
+const AUTHORIZATION = `Basic dsLkewj0hE=345i3r;`;
 const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
 const siteHeader = siteBody.querySelector(`.header`);
 const siteFooter = siteBody.querySelector(`.footer`);

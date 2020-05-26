@@ -16,6 +16,7 @@ export default class PopupController {
     this._onCommentChange = onCommentChange;
     this._commentariesController = null;
     this.closePopup = this.closePopup.bind(this);
+    this._closeFilmPopupOnEscKeyDown = this._closeFilmPopupOnEscKeyDown.bind(this);
   }
 
   closePopup() {
@@ -24,11 +25,11 @@ export default class PopupController {
     document.removeEventListener(`keydown`, this._closeFilmPopupOnEscKeyDown);
   }
 
-  _closeFilmPopupOnEscKeyDown(evt, popup) {
+  _closeFilmPopupOnEscKeyDown(evt) {
     const isEscKey = checkEscKey(evt);
 
     if (isEscKey) {
-      this.closePopup(popup);
+      this.closePopup();
     }
   }
 
@@ -42,9 +43,7 @@ export default class PopupController {
 
     siteBody.classList.add(`hide-overflow`);
 
-    document.addEventListener(`keydown`, (evt) => {
-      this._closeFilmPopupOnEscKeyDown(evt, this._filmDetailsComponent);
-    });
+    document.addEventListener(`keydown`, this._closeFilmPopupOnEscKeyDown);
 
     this._filmDetailsComponent.setButtonAddClickHandler(() => {
       const updatedFilm = FilmModel.clone(this._film);
