@@ -1,6 +1,7 @@
 import {siteMain, SortType} from './../utils/const';
 import {remove, render, RenderPosition} from './../utils/render';
 import FilmsAllComponent from './../components/films-all';
+import FilmsLoadingComponent from './../components/films-loading';
 import LoadMoreComponent from './../components/load-more';
 import NoFilmsComponent from './../components/no-films';
 import SortComponent from './../components/sort';
@@ -54,6 +55,7 @@ export default class AllFilmsController {
     this._filmsAllContainer = this._filmsAllComponent.getElement().querySelector(`.films-list__container`);
     this._loadMoreComponent = new LoadMoreComponent();
     this._noFilmsComponent = new NoFilmsComponent();
+    this._filmsLoadingComponent = new FilmsLoadingComponent();
     this._filmsRatedComponent = new FilmsRatedComponent();
     this._filmsCommentedComponent = new FilmsCommentedComponent();
     this._sortComponent = new SortComponent();
@@ -131,6 +133,10 @@ export default class AllFilmsController {
     this._mainFilmsControllers = [];
   }
 
+  removeLoadingComponent() {
+    remove(this._filmsLoadingComponent);
+  }
+
   render() {
     const films = this._filmsModel.getFiltredFilms();
 
@@ -183,11 +189,8 @@ export default class AllFilmsController {
     });
   }
 
-  _renderMainFilms(films) {
-    const mainFilms = this._renderAllFilms(this._filmsAllContainer, films.slice(0, this._shownFilmsAmount), this._onDataChange, this._onViewChange,
-        this._onCommentChange, this._api, this._commentsModel);
-
-    this._mainFilmsControllers = this._mainFilmsControllers.concat(mainFilms);
+  renderLoadingComponent() {
+    render(this._container.getElement(), this._filmsLoadingComponent);
   }
 
   _renderLoadMoreButton() {
@@ -199,6 +202,13 @@ export default class AllFilmsController {
 
     render(this._filmsAllComponent.getElement(), this._loadMoreComponent);
     this._loadMoreComponent.setClickHandler(this._onLoadMoreButtonClickHandler);
+  }
+
+  _renderMainFilms(films) {
+    const mainFilms = this._renderAllFilms(this._filmsAllContainer, films.slice(0, this._shownFilmsAmount), this._onDataChange, this._onViewChange,
+        this._onCommentChange, this._api, this._commentsModel);
+
+    this._mainFilmsControllers = this._mainFilmsControllers.concat(mainFilms);
   }
 
   show() {

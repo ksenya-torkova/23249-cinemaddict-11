@@ -64,7 +64,7 @@ export default class CommentariesController {
 
     this._commentNewComponent.setSubmitHandler((newComment) => {
       const newFilm = FilmModel.clone(this._film);
-      this._commentNewComponent.disableActiveTextCommentField();
+      this._commentNewComponent.disableTextCommentField();
 
       this._api.createComment(this._film.id, newComment)
         .then((comments) => {

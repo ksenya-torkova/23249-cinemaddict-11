@@ -25,14 +25,12 @@ const mainNavigationComponent = new MainNavigationComponent();
 const filterContainer = mainNavigationComponent.getElement();
 const filterController = new FilterController(filterContainer, filmsModel);
 let statisticComponent = null;
-
 render(siteMain, filmsBoardComponent);
-render(siteMain, mainNavigationComponent, RenderPosition.AFTER_BEGIN);
+allFilmsController.renderLoadingComponent();
 
 api.getFilms()
   .then((films) => {
     filmsModel.setFilms(films);
-    render(siteFooter, new FooterStatisticsComponent(films));
     return Promise.all(films.map((film) => api.getComments(film.id)));
   })
 
@@ -49,6 +47,7 @@ api.getFilms()
   })
 
   .finally(() => {
+    allFilmsController.removeLoadingComponent();
     allFilmsController.render();
     filterController.render();
     statisticComponent = new StatisticComponent(filmsModel);
@@ -57,6 +56,8 @@ api.getFilms()
     const watchedFilms = getWatchedFilms(filmsModel.getFilms());
     const userRank = getUserRank(watchedFilms.length);
     render(siteHeader, new UserRaitingComponent(userRank));
+    render(siteMain, mainNavigationComponent, RenderPosition.AFTER_BEGIN);
+    render(siteFooter, new FooterStatisticsComponent(filmsModel.getFilms()));
   });
 
 mainNavigationComponent.setOnViewChange((clickedItem) => {
