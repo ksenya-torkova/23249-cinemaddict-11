@@ -9,10 +9,10 @@ import FilmsBoardComponent from './components/films-board';
 import FilterController from './controllers/filter-controller';
 import FooterStatisticsComponent from './components/footer-statistics';
 import MainNavigationComponent from './components/main-navigation';
-import UserRaitingComponent, {getUserRank} from './components/user-raiting';
+import UserRaitingComponent from './components/user-raiting';
 import StatisticComponent from './components/statistics';
 
-const AUTHORIZATION = `Basic dsLkewj0hE345i3r;`;
+const AUTHORIZATION = `Basic dsLkewj0hE5i3r;`;
 const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
 const siteHeader = siteBody.querySelector(`.header`);
 const siteFooter = siteBody.querySelector(`.footer`);
@@ -54,8 +54,7 @@ api.getFilms()
     render(siteMain, statisticComponent);
     statisticComponent.hide();
     const watchedFilms = getWatchedFilms(filmsModel.getFilms());
-    const userRank = getUserRank(watchedFilms.length);
-    render(siteHeader, new UserRaitingComponent(userRank));
+    render(siteHeader, new UserRaitingComponent(watchedFilms.length));
     render(siteMain, mainNavigationComponent, RenderPosition.AFTER_BEGIN);
     render(siteFooter, new FooterStatisticsComponent(filmsModel.getFilms()));
   });

@@ -12,26 +12,19 @@ export default class FilmController {
   constructor(container, onDataChange, onViewChange, onCommentChange, api, commentsModel) {
     this._container = container;
     this._api = api;
-    this._onDataChange = onDataChange;
-    this._onCommentChange = onCommentChange;
-    this._commentsModel = commentsModel;
     this._filmComponent = null;
     this._film = null;
     this._comments = null;
-    this._onViewChange = onViewChange;
-    this._mode = Mode.DEFAULT;
     this._filmDetailsController = null;
+    this._mode = Mode.DEFAULT;
+    this._onDataChange = onDataChange;
+    this._onCommentChange = onCommentChange;
+    this._commentsModel = commentsModel;
+    this._onViewChange = onViewChange;
   }
 
   destroy() {
     remove(this._filmComponent);
-  }
-
-  _openPopup(film) {
-    this.setDefaultView();
-    this._filmDetailsController = new PopupController(film, this._commentsModel, this._onDataChange, this._onViewChange, this._onCommentChange, this._api);
-    this._filmDetailsController.render();
-    this._mode = Mode.POPUP;
   }
 
   render(film, comments) {
@@ -93,8 +86,15 @@ export default class FilmController {
 
   setDefaultView() {
     if (this._mode !== Mode.DEFAULT) {
-      this._filmDetailsController.closePopup();
+      this._filmDetailsController.close();
       this._mode = Mode.DEFAULT;
     }
+  }
+
+  _openPopup(film) {
+    this.setDefaultView();
+    this._filmDetailsController = new PopupController(film, this._commentsModel, this._onDataChange, this._onViewChange, this._onCommentChange, this._api);
+    this._filmDetailsController.render();
+    this._mode = Mode.POPUP;
   }
 }

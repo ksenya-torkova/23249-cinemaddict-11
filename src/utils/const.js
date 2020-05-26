@@ -1,4 +1,6 @@
 const ANCHOR_PREFIX = `#`;
+const FILTER_TYPES_PREFIX = `is`;
+const STATISTICS_LINK = `stats`;
 
 const FilterType = {
   ALL: `all`,
@@ -6,8 +8,6 @@ const FilterType = {
   HISTORY: `isHistory`,
   FAVORITES: `isFavorites`,
 };
-
-const FILTER_TYPES_PREFIX = `is`;
 
 const SortType = {
   DATE: `date`,
@@ -18,11 +18,10 @@ const SortType = {
 const Tag = {
   LINK: `a`,
   IMG: `img`,
+  INPUT: `input`
 };
 
 const siteBody = document.querySelector(`body`);
 const siteMain = siteBody.querySelector(`.main`);
-
-const STATISTICS_LINK = `stats`;
 
 export {ANCHOR_PREFIX, FilterType, FILTER_TYPES_PREFIX, siteBody, siteMain, SortType, STATISTICS_LINK, Tag};

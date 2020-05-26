@@ -128,10 +128,10 @@ export default class FilmDetails extends AbstractSmartComponent {
   constructor(film) {
     super();
     this._film = film;
-    this._closeButtonClickHandler = null;
-    this._addToWatchlistClickHandler = null;
-    this._markAsWathedClickHandler = null;
-    this._favoriteClickHandler = null;
+    this._onCloseButtonClick = null;
+    this._onAddToWatchlistClick = null;
+    this._onMarkAsWathedClick = null;
+    this._onFavoriteClick = null;
   }
 
   getTemplate() {
@@ -139,29 +139,29 @@ export default class FilmDetails extends AbstractSmartComponent {
   }
 
   recoveryListeners() {
-    this.setCloseButtonClickHandler(this._closeButtonClickHandler);
-    this.setButtonAddClickHandler(this._addToWatchlistClickHandler);
-    this.setButtonWatchedClickHandler(this._markAsWathedClickHandler);
-    this.setButtonFavoriteClickHandler(this._favoriteClickHandler);
+    this.setCloseButtonClickHandler(this._onCloseButtonClick);
+    this.setButtonAddClickHandler(this._onAddToWatchlistClick);
+    this.setButtonWatchedClickHandler(this._onMarkAsWathedClick);
+    this.setButtonFavoriteClickHandler(this._onFavoriteClick);
   }
 
   setButtonAddClickHandler(handler) {
     this.getElement().querySelector(`.film-details__control-label--watchlist`).addEventListener(`click`, handler);
-    this._addToWatchlistClickHandler = handler;
+    this._onAddToWatchlistClick = handler;
   }
 
   setButtonFavoriteClickHandler(handler) {
     this.getElement().querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, handler);
-    this._favoriteClickHandler = handler;
+    this._onFavoriteClick = handler;
   }
 
   setButtonWatchedClickHandler(handler) {
     this.getElement().querySelector(`.film-details__control-label--watched`).addEventListener(`click`, handler);
-    this._markAsWathedClickHandler = handler;
+    this._onMarkAsWathedClick = handler;
   }
 
   setCloseButtonClickHandler(handler) {
     this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
-    this._closeButtonClickHandler = handler;
+    this._onCloseButtonClick = handler;
   }
 }

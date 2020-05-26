@@ -11,7 +11,6 @@ const createMainNavigationTemplate = () => {
 };
 
 export default class MainNavigation extends AbstractComponent {
-
   getTemplate() {
     return createMainNavigationTemplate(this._cards);
   }

@@ -9,10 +9,6 @@ export default class Films {
     this._filterChangeHandlers = [];
   }
 
-  _callHandlers(handlers) {
-    handlers.forEach((handler) => handler());
-  }
-
   getFilms() {
     return this._films;
   }
@@ -50,5 +46,9 @@ export default class Films {
     this._callHandlers(this._dataChangeHandlers);
 
     return true;
+  }
+
+  _callHandlers(handlers) {
+    handlers.forEach((handler) => handler());
   }
 }

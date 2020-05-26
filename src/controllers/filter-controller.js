@@ -19,15 +19,6 @@ export default class FilterController {
     this._filmsModel.setDataChangeHandlers(this._onDataChange);
   }
 
-  _onDataChange() {
-    this.render();
-  }
-
-  _onFilterChange(filterType) {
-    this._activeFilterType = filterType;
-    this._filmsModel.setFilter(filterType);
-  }
-
   render() {
     const filters = Object.values(FilterType).map((filterType) => {
       const count = filterType === FilterType.ALL ? this._filmsModel.getFilms().length : getFilterAmount(this._filmsModel.getFilms(), filterType);
@@ -41,12 +32,21 @@ export default class FilterController {
 
     const oldFilterComponent = this._filterComponent;
     this._filterComponent = new FilterComponent(filters);
-    this._filterComponent.setFilterChangeHandler(this._onFilterChange);
+    this._filterComponent.setChangeHandler(this._onFilterChange);
 
     if (oldFilterComponent) {
       replace(this._filterComponent, oldFilterComponent);
     } else {
       render(this._container, this._filterComponent, RenderPosition.AFTER_BEGIN);
     }
+  }
+
+  _onDataChange() {
+    this.render();
+  }
+
+  _onFilterChange(filterType) {
+    this._activeFilterType = filterType;
+    this._filmsModel.setFilter(filterType);
   }
 }

@@ -662,6 +662,7 @@ button {
   vertical-align: top;
 }
 .film-details__term {
+  text-align: left;
   width: 140px;
   padding-right: 15px;
 }

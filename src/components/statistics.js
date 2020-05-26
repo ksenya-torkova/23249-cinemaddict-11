@@ -1,3 +1,4 @@
+import {Tag} from './../utils/const';
 import {getUserRank} from './../components/user-raiting';
 import {getWatchedFilms} from '../utils/filter';
 import Chart from 'chart.js';
@@ -43,21 +44,25 @@ const getGenreCounter = (films, genres) => {
 const getFilmsByPeriod = (films, period) => {
   const date = new Date();
 
+  const getFilteredFilms = (limitDate) => {
+    return films.filter((item) => item.watchingDate && item.watchingDate.getTime() >= limitDate);
+  };
+
   switch (period) {
     case Period.ALL:
       return films;
 
     case Period.TODAY:
-      return films.filter((item) => item.date >= date.setDate(date.getDate() - 1));
+      return getFilteredFilms(date.setHours(0, 0, 0, 0));
 
     case Period.WEEK:
-      return films.filter((item) => item.date >= date.setDate(date.getDate() - 7));
+      return getFilteredFilms(date.setDate(date.getDate() - 7));
 
     case Period.MONTH:
-      return films.filter((item) => item.date >= date.setMonth(date.getMonth() - 1));
+      return getFilteredFilms(date.setMonth(date.getMonth() - 1));
 
     case Period.YEAR:
-      return films.filter((item) => item.date >= date.setFullYear(date.getFullYear() - 1));
+      return getFilteredFilms(date.setFullYear(date.getFullYear() - 1));
 
     default:
       return films;
@@ -70,18 +75,19 @@ const createStatisticksTemplate = (films) => {
   const durationMinutes = Math.round(summaryTime % (durationHours * MINUTES_IN_HOUR));
   const topGenre = Object.entries(getGenreCounter(getFilmsByPeriod(getWatchedFilms(films), Period.ALL), getGenres(getWatchedFilms(films))))
     .sort((a, b) => b[1] - a[1])[0];
-
   const durationHoursValue = durationHours ? durationHours : `0`;
   const durationMinutesValue = durationMinutes ? durationMinutes : `0`;
   const topGenreValue = topGenre[1] > 0 ? topGenre[0] : ``;
 
   return (
     `<section class="statistic">
-      <p class="statistic__rank">
+
+      ${getWatchedFilms(films).length > 0 ?
+      `<p class="statistic__rank">
         Your rank
         <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
         <span class="statistic__rank-label">${getUserRank(getWatchedFilms(films).length)}</span>
-      </p>
+      </p>` : ``}
 
       <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
         <p class="statistic__filters-description">Show stats:</p>
@@ -128,19 +134,27 @@ const createStatisticksTemplate = (films) => {
 export default class Statistic extends AbstractSmartComponent {
   constructor(filmsModel) {
     super();
-
     this._filmsModel = filmsModel;
     this._films = this._filmsModel.getFilms();
     this._watchedFilms = getWatchedFilms(this._filmsModel.getFilms());
     this._filmsByPeriod = getFilmsByPeriod(this._watchedFilms, Period.ALL);
     this._period = Period.ALL;
     this._genres = getGenres(this._watchedFilms);
-
-    this.setPeriodChange();
+    this._onPeriodChange();
   }
 
   getTemplate() {
     return createStatisticksTemplate(this._films);
+  }
+
+  recoveryListeners() {
+    this._onPeriodChange();
+  }
+
+  show() {
+    super.show();
+    this._period = Period.ALL;
+    this._rerender();
   }
 
   _renderChart(films) {
@@ -207,18 +221,6 @@ export default class Statistic extends AbstractSmartComponent {
     });
   }
 
-  setPeriodChange() {
-    this.getElement().querySelector(`.statistic__filters`)
-      .addEventListener(`change`, (evt) => {
-        if (evt.target.tagName !== `INPUT`) {
-          return;
-        }
-
-        this._period = evt.target.value;
-        this._rerender();
-      });
-  }
-
   _rerender() {
     this._watchedFilms = getWatchedFilms(this._filmsModel.getFilms());
     this._filmsByPeriod = getFilmsByPeriod(this._watchedFilms, this._period);
@@ -230,14 +232,14 @@ export default class Statistic extends AbstractSmartComponent {
     }
   }
 
-  recoveryListeners() {
-    this.setPeriodChange();
-  }
+  _onPeriodChange() {
+    this.getElement().querySelector(`.statistic__filters`).addEventListener(`change`, (evt) => {
+      if (evt.target.tagName.toLowerCase() !== Tag.INPUT) {
+        return;
+      }
 
-  show() {
-    super.show();
-
-    this._period = Period.ALL;
-    this._rerender();
+      this._period = evt.target.value;
+      this._rerender();
+    });
   }
 }

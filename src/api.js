@@ -58,16 +58,6 @@ const API = class {
     .then(FilmModel.parseFilms);
   }
 
-  _load({url, method = Method.GET, body = null, headers = new Headers()}) {
-    headers.append(`Authorization`, this._authorization);
-
-    return fetch(`${this._endPoint}/${url}`, {method, body, headers})
-      .then(checkStatus)
-      .catch((error) => {
-        throw error;
-      });
-  }
-
   updateFilm(id, data) {
     return this._load({
       url: `movies/${id}`,
@@ -78,6 +68,16 @@ const API = class {
 
     .then((response) => response.json())
     .then(FilmModel.parseFilm);
+  }
+
+  _load({url, method = Method.GET, body = null, headers = new Headers()}) {
+    headers.append(`Authorization`, this._authorization);
+
+    return fetch(`${this._endPoint}/${url}`, {method, body, headers})
+      .then(checkStatus)
+      .catch((error) => {
+        throw error;
+      });
   }
 };
 
