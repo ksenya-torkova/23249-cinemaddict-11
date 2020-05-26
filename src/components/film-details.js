@@ -1,10 +1,46 @@
 import {formatDate, formatDuration} from './../utils/common';
-import AbstractSmartComponent from './abstract-smart-component.js';
+import AbstractSmartComponent from './abstract-smart-component';
+
+const createGenreMarkup = (genre) => {
+  return `<span class="film-details__genre">${genre}</span>`;
+};
+
+const createGenresMarkup = (genres) => {
+  const genresMarkup = genres
+  .map(
+      (genre) => {
+        return createGenreMarkup(genre);
+      }
+  ).join(`\n`);
+
+  return (
+    `<td class="film-details__cell">
+      ${genresMarkup}
+    </td>`
+  );
+};
 
 const createFilmDetailsTemplate = (film) => {
-  const {actors, ageRating, country, date, description, director, duration,
-    genres, isFavorites, isHistory, isWatchlist, poster, raiting, title, titleAlternative, writers,
+  const {
+    actors,
+    ageRating,
+    country,
+    date,
+    description,
+    director,
+    duration,
+    genres,
+    isFavorites,
+    isHistory,
+    isWatchlist,
+    poster,
+    raiting,
+    title,
+    titleAlternative,
+    writers,
   } = film;
+
+  const genreTitle = genres.length > 1 ? `Genres` : `Genre`;
 
   return (
     `<section class="film-details">
@@ -34,34 +70,34 @@ const createFilmDetailsTemplate = (film) => {
 
               <table class="film-details__table">
                 <tr class="film-details__row">
-                  <td class="film-details__term">Director</td>
+                  <th class="film-details__term">Director</th>
                   <td class="film-details__cell">${director}</td>
                 </tr>
                 <tr class="film-details__row">
-                  <td class="film-details__term">Writers</td>
+                  <th class="film-details__term">Writers</th>
                   <td class="film-details__cell">${writers}</td>
                 </tr>
                 <tr class="film-details__row">
-                  <td class="film-details__term">Actors</td>
+                  <th class="film-details__term">Actors</th>
                   <td class="film-details__cell">${actors}</td>
                 </tr>
                 <tr class="film-details__row">
-                  <td class="film-details__term">Release Date</td>
+                  <th class="film-details__term">Release Date</th>
                   <td class="film-details__cell">${formatDate(date)}</td>
                 </tr>
                 <tr class="film-details__row">
-                  <td class="film-details__term">Runtime</td>
+                  <th class="film-details__term">Runtime</th>
                   <td class="film-details__cell">${formatDuration(duration)}</td>
                 </tr>
                 <tr class="film-details__row">
-                  <td class="film-details__term">Country</td>
+                  <th class="film-details__term">Country</th>
                   <td class="film-details__cell">${country}</td>
                 </tr>
                 <tr class="film-details__row">
-                  <td class="film-details__term">Genres</td>
-                  <td class="film-details__cell">
-                    <span class="film-details__genre">${genres}</span>
-                  </td>
+                  <th class="film-details__term">
+                    ${genreTitle}
+                  </th>
+                  ${createGenresMarkup(genres)}
                 </tr>
               </table>
 
@@ -127,13 +163,5 @@ export default class FilmDetails extends AbstractSmartComponent {
   setCloseButtonClickHandler(handler) {
     this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
     this._closeButtonClickHandler = handler;
-  }
-
-  setSubmitHandler(handler) {
-    this.getElement().querySelector(`.film-details__inner`).addEventListener(`keydown`, (evt) => {
-      if (evt.key === `Enter` && (evt.ctrlKey || evt.metaKey)) {
-        handler();
-      }
-    });
   }
 }

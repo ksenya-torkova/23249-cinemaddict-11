@@ -1,6 +1,6 @@
 import {ANCHOR_PREFIX, FilterType, FILTER_TYPES_PREFIX, Tag} from './../utils/const';
-import {getSubstring} from './../utils/common.js';
-import AbstractComponent from './abstract-component.js';
+import {getSubstring} from './../utils/common';
+import AbstractComponent from './abstract-component';
 
 const FILTER_NAMES = [
   `All movies`,
@@ -52,7 +52,7 @@ export default class Filter extends AbstractComponent {
     this.getElement().addEventListener(`click`, (evt) => {
       evt.preventDefault();
 
-      if (evt.target.tagName === Tag.LINK.toUpperCase()) {
+      if (evt.target.tagName.toLowerCase() === Tag.LINK) {
         const clickedItem = getSubstring(evt.target.getAttribute(`href`), ANCHOR_PREFIX);
         const filterActiveClass = `main-navigation__item--active`;
 

@@ -1,12 +1,13 @@
-import {siteMain, SortType} from './../utils/const.js';
-import {remove, render, RenderPosition} from './../utils/render.js';
-import FilmsAllComponent from './../components/films-all.js';
-import LoadMoreComponent from './../components/load-more.js';
-import NoFilmsComponent from './../components/no-films.js';
-import SortComponent from './../components/sort.js';
-import FilmController from './film-controller.js';
-import FilmsCommentedComponent from './../components/films-commented.js';
-import FilmsRatedComponent from './../components/films-rated.js';
+import {siteMain, SortType} from './../utils/const';
+import {remove, render, RenderPosition} from './../utils/render';
+import FilmsAllComponent from './../components/films-all';
+import FilmsLoadingComponent from './../components/films-loading';
+import LoadMoreComponent from './../components/load-more';
+import NoFilmsComponent from './../components/no-films';
+import SortComponent from './../components/sort';
+import FilmController from './film-controller';
+import FilmsCommentedComponent from './../components/films-commented';
+import FilmsRatedComponent from './../components/films-rated';
 
 const DEFAULT_CARDS_AMOUNT = 5;
 const DOWNLOADED_CARDS_AMOUNT = 5;
@@ -42,9 +43,11 @@ const getSortedFilms = (films, sortType, from = 0, to = DEFAULT_CARDS_AMOUNT) =>
 };
 
 export default class AllFilmsController {
-  constructor(container, filmsModel, api) {
+  constructor(container, filmsModel, commentsModel, api) {
     this._container = container;
     this._filmsModel = filmsModel;
+    this._commentsModel = commentsModel;
+    this._comments = this._commentsModel.getComments();
     this._api = api;
     this._shownFilmControllers = [];
     this._shownFilmsAmount = DEFAULT_CARDS_AMOUNT;
@@ -52,6 +55,7 @@ export default class AllFilmsController {
     this._filmsAllContainer = this._filmsAllComponent.getElement().querySelector(`.films-list__container`);
     this._loadMoreComponent = new LoadMoreComponent();
     this._noFilmsComponent = new NoFilmsComponent();
+    this._filmsLoadingComponent = new FilmsLoadingComponent();
     this._filmsRatedComponent = new FilmsRatedComponent();
     this._filmsCommentedComponent = new FilmsCommentedComponent();
     this._sortComponent = new SortComponent();
@@ -63,11 +67,20 @@ export default class AllFilmsController {
     this._filmsModel.setFilterChangeHandlers(this._onFilterChange);
     this._mainFilmsControllers = [];
     this._onLoadMoreButtonClickHandler = this._onLoadMoreButtonClickHandler.bind(this);
+    this._onCommentChange = this._onCommentChange.bind(this);
   }
 
   hide() {
     this._container.hide();
     this._sortComponent.hide();
+  }
+
+  _onCommentChange(oldData, newData, commentId, comments) {
+    const isSuccess = this._commentsModel.updateComments(oldData.id, commentId, comments) && this._filmsModel.updateFilm(oldData.id, newData);
+
+    if (isSuccess) {
+      this._onDataChange(oldData, newData);
+    }
   }
 
   _onDataChange(oldData, newData) {
@@ -120,6 +133,10 @@ export default class AllFilmsController {
     this._mainFilmsControllers = [];
   }
 
+  removeLoadingComponent() {
+    remove(this._filmsLoadingComponent);
+  }
+
   render() {
     const films = this._filmsModel.getFiltredFilms();
 
@@ -144,31 +161,36 @@ export default class AllFilmsController {
     if (topRatedFilms) {
       const filmsRatedContainer = this._filmsRatedComponent.getElement().querySelector(`.films-list__container`);
       render(this._container.getElement(), this._filmsRatedComponent);
-      const additionalFilms = this._renderAllFilms(filmsRatedContainer, topRatedFilms, this._onDataChange, this._onViewChange);
+
+      const additionalFilms = this._renderAllFilms(filmsRatedContainer, topRatedFilms, this._onDataChange, this._onViewChange,
+          this._onCommentChange, this._api, this._commentsModel);
+
       this._shownFilmControllers = this._shownFilmControllers.concat(additionalFilms);
     }
 
     if (mostCommentedFilms) {
       const filmsCommentedContainer = this._filmsCommentedComponent.getElement().querySelector(`.films-list__container`);
       render(this._container.getElement(), this._filmsCommentedComponent);
-      const additionalFilms = this._renderAllFilms(filmsCommentedContainer, mostCommentedFilms, this._onDataChange, this._onViewChange);
+
+      const additionalFilms = this._renderAllFilms(filmsCommentedContainer, mostCommentedFilms, this._onDataChange, this._onViewChange,
+          this._onCommentChange, this._api, this._commentsModel);
+
       this._shownFilmControllers = this._shownFilmControllers.concat(additionalFilms);
     }
   }
 
-  _renderAllFilms(container, films, onDataChange, onViewChange) {
+  _renderAllFilms(container, films, onDataChange, onViewChange, onCommentChange, api, commentsModel) {
     return films.map((film) => {
-      const filmController = new FilmController(container, onDataChange, onViewChange, this._api);
+      const filmController = new FilmController(container, onDataChange, onViewChange, onCommentChange, api, commentsModel);
 
-      filmController.render(film);
+      filmController.render(film, this._comments);
 
       return filmController;
     });
   }
 
-  _renderMainFilms(films) {
-    const mainFilms = this._renderAllFilms(this._filmsAllContainer, films.slice(0, this._shownFilmsAmount), this._onDataChange, this._onViewChange);
-    this._mainFilmsControllers = this._mainFilmsControllers.concat(mainFilms);
+  renderLoadingComponent() {
+    render(this._container.getElement(), this._filmsLoadingComponent);
   }
 
   _renderLoadMoreButton() {
@@ -180,6 +202,13 @@ export default class AllFilmsController {
 
     render(this._filmsAllComponent.getElement(), this._loadMoreComponent);
     this._loadMoreComponent.setClickHandler(this._onLoadMoreButtonClickHandler);
+  }
+
+  _renderMainFilms(films) {
+    const mainFilms = this._renderAllFilms(this._filmsAllContainer, films.slice(0, this._shownFilmsAmount), this._onDataChange, this._onViewChange,
+        this._onCommentChange, this._api, this._commentsModel);
+
+    this._mainFilmsControllers = this._mainFilmsControllers.concat(mainFilms);
   }
 
   show() {

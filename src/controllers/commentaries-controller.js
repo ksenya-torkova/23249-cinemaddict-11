@@ -1,45 +1,21 @@
-import {render, replace} from './../utils/render.js';
-import CommentContainerComponent from './../components/comment-container.js';
-import CommentsListComponent from './../components/comments-list.js';
-import CommentNewComponent from './../components/comment-new.js';
+import {render} from './../utils/render';
+import CommentContainerComponent from './../components/comment-container';
+import CommentsListComponent from './../components/comments-list';
+import CommentNewComponent from './../components/comment-new';
+import FilmModel from './../models/film-model';
 
 export default class CommentariesController {
-  constructor(container, film, commentModel, onDataChange) {
+  constructor(container, film, commentModel, onCommentChange, api) {
     this._container = container;
     this._film = film;
+    this._api = api;
     this._commentNewComponent = null;
     this._commentsListComponent = null;
-    this._oldCommentsListComponent = null;
     this._commentContainerComponent = null;
     this._comments = null;
     this._commentModel = commentModel;
-    this._onDataChange = onDataChange;
     this._commentsContainer = null;
-  }
-
-  addComment() {
-    this._commentContainerComponent.getElement().querySelector(`.film-details__comments-count`).textContent = this._commentModel.getComments().length;
-    this._comments = this._commentModel.getComments();
-    this._commentsListComponent = new CommentsListComponent(this._comments);
-    replace(this._commentsListComponent, this._oldCommentsListComponent);
-  }
-
-  _createCommentsList() {
-    this._comments = this._commentModel.getComments();
-    this._commentsListComponent = new CommentsListComponent(this._comments);
-    this._oldCommentsListComponent = this._commentsListComponent;
-
-    this._commentsListComponent.setDeleteButtonClickHandler((id) => {
-      this._commentModel.removeComment(this._film, this._comments, id);
-
-      this._onDataChange(this._film, Object.assign({}, this._film, {
-        commentsLength: this._commentModel.getComments().length,
-      }));
-
-      this._updateCommentsList();
-    });
-
-    render(this._commentsContainer, this._commentsListComponent);
+    this._onCommentChange = onCommentChange;
   }
 
   _onEmojiListClick() {
@@ -58,18 +34,55 @@ export default class CommentariesController {
 
   render() {
     const popupComments = this._container.getElement().querySelector(`.form-details__bottom-container`);
-    this._commentContainerComponent = new CommentContainerComponent(this._commentModel.getComments().length);
+    this._commentContainerComponent = new CommentContainerComponent(this._commentModel.getCommentsById(this._film.id).length);
+
     render(popupComments, this._commentContainerComponent);
 
     this._commentsContainer = popupComments.querySelector(`.film-details__comments-wrap`);
     this._commentNewComponent = new CommentNewComponent();
-    this._createCommentsList();
+    this._commentsListComponent = new CommentsListComponent(this._commentModel.getCommentsById(this._film.id));
     this._onEmojiListClick();
-    render(this._commentsContainer, this._commentNewComponent);
-  }
 
-  _updateCommentsList() {
-    this._commentContainerComponent.getElement().querySelector(`.film-details__comments-count`).textContent = this._commentModel.getComments().length;
-    this._comments = this._commentModel.getComments();
+    this._commentsListComponent.setDeleteButtonClickHandler((removeCommentId, commentBlock) => {
+      this._commentsListComponent.disableDeleteButton();
+      const newFilm = FilmModel.clone(this._film);
+
+      newFilm.comments = newFilm.comments.filter((commentId) => commentId !== removeCommentId);
+
+      this._api.deleteComment(removeCommentId)
+        .then(() => {
+          commentBlock.remove();
+          this._onCommentChange(this._film, newFilm, removeCommentId, null);
+          this._commentContainerComponent.changeCommentsAmount(this._commentModel.getCommentsById(this._film.id).length);
+        })
+
+        .catch(() => {
+          this._commentsListComponent.enableDeleteButton();
+          this._commentsListComponent.shake();
+        });
+    });
+
+    this._commentNewComponent.setSubmitHandler((newComment) => {
+      const newFilm = FilmModel.clone(this._film);
+      this._commentNewComponent.disableTextCommentField();
+
+      this._api.createComment(this._film.id, newComment)
+        .then((comments) => {
+          newFilm.comments = comments.map((comment) => comment.id);
+          this._onCommentChange(this._film, newFilm, null, comments);
+          this._commentContainerComponent.changeCommentsAmount(this._commentModel.getCommentsById(this._film.id).length);
+          this._commentsListComponent.updateComments(comments);
+          this._commentNewComponent.clear();
+          this._commentNewComponent.enableTextCommentField();
+        })
+
+        .catch(() => {
+          this._commentNewComponent.shakeNewComment();
+          this._commentNewComponent.enableTextCommentField();
+        });
+    });
+
+    render(this._commentsContainer, this._commentsListComponent);
+    render(this._commentsContainer, this._commentNewComponent);
   }
 }

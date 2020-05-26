@@ -1,4 +1,7 @@
-import AbstractComponent from './abstract-component.js';
+import {encode} from 'he';
+import {Tag} from './../utils/const';
+import {shake} from './../utils/render';
+import AbstractComponent from './abstract-component';
 
 const createCommentNew = () => {
   return (
@@ -35,17 +38,104 @@ const createCommentNew = () => {
 };
 
 export default class CommentNew extends AbstractComponent {
+  constructor() {
+    super();
+    this._textCommentField = null;
+    this._imgContainer = null;
+  }
+
+  _addBorderToComment() {
+    this._textCommentField.style.border = `1px solid #ff0000`;
+  }
+
+  _addBorderToImgContainer() {
+    this._imgContainer.style.border = `1px solid #ff0000`;
+  }
+
+  clear() {
+    const emoji = this.getElement().querySelector(`.film-details__add-emoji-label img`);
+    const textarea = this.getElement().querySelector(`.film-details__comment-input`);
+
+    emoji.remove();
+    textarea.value = ``;
+  }
+
+  disableTextCommentField() {
+    this._textCommentField.disabled = true;
+  }
+
+  enableTextCommentField() {
+    this._textCommentField.disabled = false;
+  }
+
+  _removeBorderFromComment() {
+    this._textCommentField.style.border = `1px solid transparent`;
+  }
+
+  _removeBorderFromImgContainer() {
+    this._imgContainer.style.border = `1px solid transparent`;
+  }
+
+  _getNewComment() {
+    const textCommentElement = this._element.querySelector(`.film-details__comment-input`);
+    const comment = encode(textCommentElement.value);
+    const commentLabel = this._element.querySelector(`.film-details__add-emoji-label`);
+    const commentImg = this._element.querySelector(`.film-details__add-emoji-label img`);
+    this._imgContainer = commentLabel;
+
+    if (!commentImg) {
+      this._addBorderToImgContainer();
+      return null;
+    } else {
+      this._removeBorderFromImgContainer();
+    }
+
+    const emotion = commentImg.alt;
+
+    if (!comment) {
+      this._addBorderToComment();
+      return null;
+    } else {
+      this._removeBorderFromComment();
+    }
+
+    const date = new Date();
+
+    return {
+      comment,
+      date,
+      emotion,
+    };
+  }
+
   getTemplate() {
     return createCommentNew();
   }
 
   onEmojiListClick(handler) {
     this.getElement().querySelector(`.film-details__emoji-list`).addEventListener(`click`, (evt) => {
-      if (evt.target.tagName.toLowerCase() !== `img`) {
+      if (evt.target.tagName.toLowerCase() !== Tag.IMG) {
         return;
       }
 
       handler(evt);
     });
+  }
+
+  setSubmitHandler(handler) {
+    const textCommentElement = this._element.querySelector(`.film-details__comment-input`);
+    this._textCommentField = textCommentElement;
+
+    textCommentElement.addEventListener(`keydown`, (evt) => {
+      if (evt.key === `Enter` && (evt.ctrlKey || evt.metaKey)) {
+        const newComment = this._getNewComment();
+
+        handler(newComment);
+      }
+    });
+  }
+
+  shakeNewComment() {
+    shake(this.getElement());
   }
 }

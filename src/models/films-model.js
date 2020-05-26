@@ -1,5 +1,5 @@
-import {FilterType} from '../utils/const.js';
-import {getFilmsByFilter} from '../utils/filter.js';
+import {FilterType} from '../utils/const';
+import {getFilmsByFilter} from '../utils/filter';
 
 export default class Films {
   constructor() {

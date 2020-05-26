@@ -1,4 +1,4 @@
-import AbstractComponent from './abstract-component.js';
+import AbstractComponent from './abstract-component';
 
 const RANK_START_FROM = 1;
 
@@ -11,7 +11,7 @@ const userRanks = [
 const userRanksLimits = {
   [userRanks[0]]: 10,
   [userRanks[1]]: 20,
-  [userRanks[2]]: Infinity
+  [userRanks[2]]: Infinity,
 };
 
 let currentUserRank = ``;
