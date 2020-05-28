@@ -1,5 +1,5 @@
-import FilmModel from './models/film-model';
-import CommentModel from './models/comment-model';
+import FilmModel from './../models/film-model';
+import CommentModel from './../models/comment-model';
 
 const Method = {
   DELETE: `DELETE`,
@@ -56,6 +56,17 @@ const API = class {
 
     .then((response) => response.json())
     .then(FilmModel.parseFilms);
+  }
+
+  sync(data) {
+    return this._load({
+      url: `movies/sync`,
+      method: Method.POST,
+      body: JSON.stringify(data),
+      headers: new Headers({"Content-Type": `application/json`})
+    })
+
+    .then((response) => response.json());
   }
 
   updateFilm(id, data) {

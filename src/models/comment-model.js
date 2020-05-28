@@ -17,6 +17,16 @@ export default class Comment {
     };
   }
 
+  toRAWforStore() {
+    return {
+      "author": this.userName,
+      "comment": this.text,
+      "date": this.time,
+      "emotion": this.emojiType,
+      "id": this.id,
+    };
+  }
+
   static parseComment(data) {
     return new Comment(data);
   }
