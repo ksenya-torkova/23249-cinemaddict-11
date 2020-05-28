@@ -14,7 +14,7 @@ import MainNavigationComponent from './components/main-navigation';
 import UserRaitingComponent from './components/user-raiting';
 import StatisticComponent from './components/statistics';
 
-const AUTHORIZATION = `Basic dsLkewj0hE5i3r;`;
+const AUTHORIZATION = `Basic dsLkewj0E5i3r;`;
 const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
 const FILM_STORE_PREFIX = `cinemaddict-film-localstorage`;
 const COMMENTS_STORE_PREFIX = `cinemaddict-comments-localstorage`;

@@ -35,7 +35,7 @@ export default class CommentariesController {
 
       newFilm.comments = newFilm.comments.filter((commentId) => commentId !== removeCommentId);
 
-      this._api.deleteComment(removeCommentId)
+      this._api.deleteComment(removeCommentId, this._film, this._comments)
         .then(() => {
           commentBlock.remove();
           this._onCommentChange(this._film, newFilm, removeCommentId, null);
@@ -52,7 +52,7 @@ export default class CommentariesController {
       const newFilm = FilmModel.clone(this._film);
       this._commentNewComponent.disableTextCommentField();
 
-      this._api.createComment(this._film.id, newComment)
+      this._api.createComment(this._film, newComment)
         .then((comments) => {
           newFilm.comments = comments.map((comment) => comment.id);
           this._onCommentChange(this._film, newFilm, null, comments);

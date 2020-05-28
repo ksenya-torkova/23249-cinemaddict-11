@@ -8,10 +8,10 @@ const ButtonStatus = {
 };
 
 const createComment = (comment) => {
-  const {emojiType, text, userName, time} = comment;
+  const {emojiType, id, text, time, userName} = comment;
 
   return (
-    `<li class="film-details__comment" data-id="${comment.id}">
+    `<li class="film-details__comment" data-id="${id}">
       <span class="film-details__comment-emoji">
         <img src="./images/emoji/${emojiType}.png" width="55" height="55" alt="emoji-${emojiType}">
       </span>

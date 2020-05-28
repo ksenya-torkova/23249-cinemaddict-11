@@ -35,7 +35,7 @@ export default class Provider {
     return Promise.reject(`You can't create comment in offline`);
   }
 
-  deleteComment(film, comments, commentId) {
+  deleteComment(commentId, film, comments) {
     if (isOnline()) {
       return this._api.deleteComment(commentId)
        .then(() => {
