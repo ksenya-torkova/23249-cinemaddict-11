@@ -1,5 +1,5 @@
 import {STATISTICS_LINK, siteBody, siteMain} from './utils/const';
-import {getWatchedFilms} from './utils/filter';
+import {getHistoryFilms} from './utils/filter';
 import {render, RenderPosition} from './utils/render';
 import AllFilmsController from './controllers/all-films-controller';
 import API from './api/index';
@@ -62,7 +62,7 @@ apiWithProvider.getFilms()
     statisticComponent = new StatisticComponent(filmsModel);
     render(siteMain, statisticComponent);
     statisticComponent.hide();
-    const watchedFilms = getWatchedFilms(filmsModel.getFilms());
+    const watchedFilms = getHistoryFilms(filmsModel.getFilms());
     render(siteHeader, new UserRaitingComponent(watchedFilms.length));
     render(siteMain, mainNavigationComponent, RenderPosition.AFTER_BEGIN);
     render(siteFooter, new FooterStatisticsComponent(filmsModel.getFilms()));
