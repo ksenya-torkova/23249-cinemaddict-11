@@ -333,6 +333,13 @@ button {
 
 .film-card__title {
   margin-right: 0.5em;
+  transition: opacity ease 0.35s;
+}
+
+.film-card__title:hover {
+  cursor: pointer;
+  opacity: 0.7;
+  color: var(--text-color-active);
 }
 
 .film-card__rating,
@@ -359,9 +366,14 @@ button {
   height: 340px;
   overflow: hidden;
   position: absolute;
-  transition: bottom 0.2s ease-out;
+  transition: bottom 0.2s ease-out, opacity ease 0.35s;
   width: 100%;
   z-index: 1;
+}
+
+.film-card__poster:hover {
+  cursor: pointer;
+  opacity: 0.7;
 }
 
 .film-card--no-controls .film-card__poster {
