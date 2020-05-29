@@ -1,6 +1,6 @@
 import {Tag} from './../utils/const';
 import {getUserRank} from './../components/user-raiting';
-import {getWatchedFilms} from '../utils/filter';
+import {getHistoryFilms} from '../utils/filter';
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import AbstractSmartComponent from '../components/abstract-smart-component';
@@ -70,23 +70,27 @@ const getFilmsByPeriod = (films, period) => {
 };
 
 const createStatisticksTemplate = (films) => {
-  const summaryTime = getFilmsByPeriod(getWatchedFilms(films), Period.ALL).reduce((sum, current) => sum + current.duration, 0);
+  const summaryTime = getFilmsByPeriod(getHistoryFilms(films), Period.ALL).reduce((sum, current) => sum + current.duration, 0);
   const durationHours = Math.floor(summaryTime / MINUTES_IN_HOUR);
   const durationMinutes = Math.round(summaryTime % (durationHours * MINUTES_IN_HOUR));
-  const topGenre = Object.entries(getGenreCounter(getFilmsByPeriod(getWatchedFilms(films), Period.ALL), getGenres(getWatchedFilms(films))))
+  const topGenre = Object.entries(getGenreCounter(getFilmsByPeriod(getHistoryFilms(films), Period.ALL), getGenres(getHistoryFilms(films))))
     .sort((a, b) => b[1] - a[1])[0];
   const durationHoursValue = durationHours ? durationHours : `0`;
   const durationMinutesValue = durationMinutes ? durationMinutes : `0`;
-  const topGenreValue = topGenre[1] > 0 ? topGenre[0] : ``;
+  let topGenreValue = ``;
+
+  if (topGenre) {
+    topGenreValue = topGenre[1] > 0 ? topGenre[0] : ``;
+  }
 
   return (
     `<section class="statistic">
 
-      ${getWatchedFilms(films).length > 0 ?
+      ${getHistoryFilms(films).length > 0 ?
       `<p class="statistic__rank">
         Your rank
         <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-        <span class="statistic__rank-label">${getUserRank(getWatchedFilms(films).length)}</span>
+        <span class="statistic__rank-label">${getUserRank(getHistoryFilms(films).length)}</span>
       </p>` : ``}
 
       <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
@@ -111,7 +115,7 @@ const createStatisticksTemplate = (films) => {
       <ul class="statistic__text-list">
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">You watched</h4>
-          <p class="statistic__item-text">${getFilmsByPeriod(getWatchedFilms(films), Period.ALL).length} <span class="statistic__item-description">movies</span></p>
+          <p class="statistic__item-text">${getFilmsByPeriod(getHistoryFilms(films), Period.ALL).length} <span class="statistic__item-description">movies</span></p>
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Total duration</h4>
@@ -136,7 +140,7 @@ export default class Statistic extends AbstractSmartComponent {
     super();
     this._filmsModel = filmsModel;
     this._films = this._filmsModel.getFilms();
-    this._watchedFilms = getWatchedFilms(this._filmsModel.getFilms());
+    this._watchedFilms = getHistoryFilms(this._filmsModel.getFilms());
     this._filmsByPeriod = getFilmsByPeriod(this._watchedFilms, Period.ALL);
     this._period = Period.ALL;
     this._genres = getGenres(this._watchedFilms);
@@ -222,7 +226,7 @@ export default class Statistic extends AbstractSmartComponent {
   }
 
   _rerender() {
-    this._watchedFilms = getWatchedFilms(this._filmsModel.getFilms());
+    this._watchedFilms = getHistoryFilms(this._filmsModel.getFilms());
     this._filmsByPeriod = getFilmsByPeriod(this._watchedFilms, this._period);
     super.rerender();
     this.getElement().querySelector(`input[value="${this._period}"]`).checked = true;
