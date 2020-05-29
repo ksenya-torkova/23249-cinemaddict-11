@@ -1,5 +1,5 @@
-import Comment from './../models/comment-model';
-import Film from './../models/film-model';
+import CommentModel from '../models/comment';
+import FilmModel from '../models/film';
 
 const isOnline = () => {
   return window.navigator.onLine;
@@ -26,8 +26,9 @@ export default class Provider {
         .then((comments) => {
           this._commentStore.setItem(film.id, comments);
           const newFilmComments = film.comments.map((commentItem) => commentItem.id);
-          const newFilm = Film.clone(Object.assign(film, {comments: newFilmComments}));
+          const newFilm = FilmModel.clone(Object.assign(film, {comments: newFilmComments}));
           this._filmStore.setItem(film.id, newFilm);
+
           return comments;
         });
     }
@@ -59,7 +60,7 @@ export default class Provider {
 
     const storeComments = this._commentStore.getItems()[id];
 
-    return Promise.resolve(Comment.parseComments(storeComments, id));
+    return Promise.resolve(CommentModel.parseComments(storeComments, id));
   }
 
 
@@ -77,7 +78,7 @@ export default class Provider {
 
     const storeFilms = Object.values(this._filmStore.getItems());
 
-    return Promise.resolve(Film.parseFilms(storeFilms));
+    return Promise.resolve(FilmModel.parseFilms(storeFilms));
   }
 
   sync() {
@@ -106,7 +107,7 @@ export default class Provider {
         });
     }
 
-    const localFilm = Film.clone(Object.assign(film, {id}));
+    const localFilm = FilmModel.clone(Object.assign(film, {id}));
 
     this._filmStore.setItem(id, localFilm.toRAW());
 

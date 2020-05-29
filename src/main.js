@@ -5,14 +5,14 @@ import AllFilmsController from './controllers/all-films-controller';
 import API from './api/index';
 import Store from './api/store';
 import Provider from './api/provider';
-import CommentsModel from './models/comments-model';
-import FilmsModel from './models/films-model';
+import CommentsModel from './models/comments';
+import FilmsModel from './models/films';
 import FilmsBoardComponent from './components/films-board';
 import FilterController from './controllers/filter-controller';
 import FooterStatisticsComponent from './components/footer-statistics';
 import MainNavigationComponent from './components/main-navigation';
 import UserRaitingComponent from './components/user-raiting';
-import StatisticComponent from './components/statistics';
+import StatisticsComponent from './components/statistics';
 
 const AUTHORIZATION = `Basic dsLkewj0E5i3r;`;
 const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
@@ -59,7 +59,7 @@ apiWithProvider.getFilms()
     allFilmsController.removeLoadingComponent();
     allFilmsController.render();
     filterController.render();
-    statisticComponent = new StatisticComponent(filmsModel);
+    statisticComponent = new StatisticsComponent(filmsModel);
     render(siteMain, statisticComponent);
     statisticComponent.hide();
     const watchedFilms = getHistoryFilms(filmsModel.getFilms());

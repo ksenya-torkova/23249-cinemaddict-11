@@ -1,5 +1,5 @@
-import FilmModel from './../models/film-model';
-import CommentModel from './../models/comment-model';
+import CommentModel from '../models/comment';
+import FilmModel from '../models/film';
 
 const Method = {
   DELETE: `DELETE`,

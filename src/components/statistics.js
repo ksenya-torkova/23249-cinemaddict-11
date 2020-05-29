@@ -135,7 +135,7 @@ const createStatisticksTemplate = (films) => {
   );
 };
 
-export default class Statistic extends AbstractSmartComponent {
+export default class Statistics extends AbstractSmartComponent {
   constructor(filmsModel) {
     super();
     this._filmsModel = filmsModel;

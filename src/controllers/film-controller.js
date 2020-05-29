@@ -1,7 +1,7 @@
 import {remove, render, replace} from './../utils/render';
 import PopupController from './popup-controller';
 import FilmComponent from './../components/film';
-import FilmModel from './../models/film-model';
+import FilmModel from '../models/film';
 
 const Mode = {
   DEFAULT: `default`,

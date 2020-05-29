@@ -2,7 +2,7 @@ import {render} from './../utils/render';
 import CommentContainerComponent from './../components/comment-container';
 import CommentsListComponent from './../components/comments-list';
 import CommentNewComponent from './../components/comment-new';
-import FilmModel from './../models/film-model';
+import FilmModel from '../models/film';
 
 export default class CommentariesController {
   constructor(container, film, commentModel, onCommentChange, api) {

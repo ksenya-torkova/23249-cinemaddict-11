@@ -1,9 +1,9 @@
 import {siteBody} from './../utils/const';
 import {remove, render} from './../utils/render';
 import {checkEscKey} from './../utils/common';
-import FilmDetailsComponent from './../components/film-details';
 import CommentariesController from './commentaries-controller';
-import FilmModel from './../models/film-model';
+import FilmDetailsComponent from './../components/film-details';
+import FilmModel from '../models/film';
 
 export default class PopupController {
   constructor(film, commentsModel, onDataChange, onViewChange, onCommentChange, api) {
