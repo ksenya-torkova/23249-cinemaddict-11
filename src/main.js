@@ -46,9 +46,9 @@ apiWithProvider.getFilms()
   .then((comments) => {
     const films = filmsModel.getFiltredFilms();
 
-    for (let i = 0; i < films.length; i++) {
-      commentsModel.setComments(films[i].id, comments[i]);
-    }
+    films.forEach((film, index) => {
+      commentsModel.setComments(film.id, comments[index]);
+    });
   })
 
   .catch(() => {
