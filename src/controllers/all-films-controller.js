@@ -194,6 +194,7 @@ export default class AllFilmsController {
   }
 
   _onFilterChange() {
+    this._shownFilmsAmount = DEFAULT_CARDS_AMOUNT;
     this._update(this._shownFilmsAmount);
   }
 
@@ -210,6 +211,7 @@ export default class AllFilmsController {
   }
 
   _onSortTypeChange(sortType) {
+    this._shownFilmsAmount = DEFAULT_CARDS_AMOUNT;
     const sortedFilms = getSortedFilms(this._filmsModel.getFiltredFilms(), sortType, 0, this._shownFilmsAmount);
     this._remove();
     this._renderMain(sortedFilms);
