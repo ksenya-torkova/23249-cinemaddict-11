@@ -65,8 +65,8 @@ export default class PopupController {
     render(siteBody, this._filmDetailsComponent);
   }
 
-  _loadComments(container, film) {
-    this._commentariesController = new CommentariesController(container, film, this._commentsModel, this._onCommentChange, this._api);
+  _loadComments(container) {
+    this._commentariesController = new CommentariesController(container, this._film, this._commentsModel, this._onCommentChange, this._api);
     this._commentariesController.render();
   }
 

@@ -27,7 +27,8 @@ const getFilmDescription = (description) => {
 };
 
 const createFilmTemplate = (film) => {
-  const {date, description, duration, genres, isFavorites, isHistory, isWatchlist, title, poster, raiting, commentsLength} = film;
+  const {date, description, duration, genres, isFavorites, isHistory, isWatchlist, title, poster, raiting, comments} = film;
+  const commentsLength = comments.length;
 
   return (
     `<article class="film-card">

@@ -14,7 +14,7 @@ import MainNavigationComponent from './components/main-navigation';
 import UserRaitingComponent from './components/user-raiting';
 import StatisticsComponent from './components/statistics';
 
-const AUTHORIZATION = `Basic dsLkewj0E5i3r;`;
+const AUTHORIZATION = `Basic dsLkewJ0bsgdi3r;`;
 const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
 const FILM_STORE_PREFIX = `cinemaddict-film-localstorage`;
 const COMMENTS_STORE_PREFIX = `cinemaddict-comments-localstorage`;
@@ -82,12 +82,12 @@ mainNavigationComponent.setOnViewChange((clickedItem) => {
   }
 });
 
-window.addEventListener(`load`, () => {
-  navigator.serviceWorker.register(`/sw.js`)
-    .then(() => {
-    }).catch(() => {
-    });
-});
+// window.addEventListener(`load`, () => {
+//   navigator.serviceWorker.register(`/sw.js`)
+//     .then(() => {
+//     }).catch(() => {
+//     });
+// });
 
 window.addEventListener(`online`, () => {
   document.title = document.title.replace(` [offline]`, ``);

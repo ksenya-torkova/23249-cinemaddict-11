@@ -169,8 +169,8 @@ export default class AllFilmsController {
     this._renderLoadMoreButton();
   }
 
-  _onCommentChange(oldData, newData, commentId, comments) {
-    const isSuccess = this._commentsModel.updateComments(oldData.id, commentId, comments) && this._filmsModel.updateFilm(oldData.id, newData);
+  _onCommentChange(oldData, newData, comments) {
+    const isSuccess = this._commentsModel.updateComments(oldData.id, comments) && this._filmsModel.updateFilm(oldData.id, newData);
 
     if (isSuccess) {
       this._onDataChange(oldData, newData);
@@ -185,7 +185,7 @@ export default class AllFilmsController {
         if (isSuccess) {
           [...this._shownFilmControllers, ...this._mainFilmsControllers].forEach((controller) => {
             if (controller._film.id === oldData.id) {
-              controller.render(filmModel);
+              controller.render(filmModel, newData.comments);
               this._update(this._shownFilmsAmount);
             }
           });

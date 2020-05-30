@@ -80,9 +80,9 @@ export default class CommentsList extends AbstractSmartComponent {
       const commentId = deleteButtonParent.dataset.id;
 
       handler(commentId, deleteButtonParent);
-
-      this._deleteButtonClickHandler = handler;
     }));
+
+    this._deleteButtonClickHandler = handler;
   }
 
   shake() {
