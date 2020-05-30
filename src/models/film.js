@@ -3,7 +3,6 @@ export default class Film {
     this.actors = data[`film_info`][`actors`];
     this.ageRating = data[`film_info`][`age_rating`];
     this.comments = data[`comments`];
-    this.commentsLength = data[`comments`].length;
     this.country = data[`film_info`][`release`][`release_country`];
     this.date = new Date(data[`film_info`][`release`][`date`]) || null;
     this.description = data[`film_info`][`description`] || ``;

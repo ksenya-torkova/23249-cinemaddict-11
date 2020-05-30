@@ -8,10 +8,10 @@ const ButtonStatus = {
 };
 
 const createComment = (comment) => {
-  const {emojiType, text, userName, time} = comment;
+  const {emojiType, id, text, time, userName} = comment;
 
   return (
-    `<li class="film-details__comment" data-id="${comment.id}">
+    `<li class="film-details__comment" data-id="${id}">
       <span class="film-details__comment-emoji">
         <img src="./images/emoji/${emojiType}.png" width="55" height="55" alt="emoji-${emojiType}">
       </span>
@@ -80,9 +80,9 @@ export default class CommentsList extends AbstractSmartComponent {
       const commentId = deleteButtonParent.dataset.id;
 
       handler(commentId, deleteButtonParent);
-
-      this._deleteButtonClickHandler = handler;
     }));
+
+    this._deleteButtonClickHandler = handler;
   }
 
   shake() {

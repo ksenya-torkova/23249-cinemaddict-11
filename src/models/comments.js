@@ -21,14 +21,8 @@ export default class Comments {
     this._dataChangeHandlers.push(handler);
   }
 
-  updateComments(filmId, commentId, comments) {
-    if (commentId === null) {
-      this._comments[filmId] = comments;
-    }
-
-    if (comments === null) {
-      this._comments[filmId] = this._comments[filmId].filter((comment) => comment.id !== commentId);
-    }
+  updateComments(filmId, comments) {
+    this._comments[filmId] = comments;
 
     return true;
   }

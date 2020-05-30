@@ -1,20 +1,23 @@
-import AbstractComponent from './abstract-component';
+import AbstractSmartComponent from './abstract-smart-component';
+
+const getCommentsDeclension = (amount) => {
+  return amount !== 1 ? `Comments` : `Comment`;
+};
 
 const createCommentContainer = (amount) => {
-  const commentDeclension = amount > 1 ? `Comments` : `Comment`;
-  const isComments = amount > 0 ?
-    `<h3 class="film-details__comments-title">${commentDeclension}
+  const comments =
+    `<h3 class="film-details__comments-title">${getCommentsDeclension(amount)}
       <span class="film-details__comments-count">${amount}</span>
-    </h3>` : ``;
+    </h3>`;
 
   return (
     `<section class="film-details__comments-wrap">
-      ${isComments}
+      ${comments}
     </section>`
   );
 };
 
-export default class CommentContainer extends AbstractComponent {
+export default class CommentContainer extends AbstractSmartComponent {
   constructor(commentsLength) {
     super();
     this._commentsLength = commentsLength;
